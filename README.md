@@ -14,6 +14,9 @@ Caso ainda não tenha o NPM instalado, siga estas instruções:
    ```
 
 ### Instalando as dependências do projeto e executando-o
+
+No diretório raiz do projeto:
+
 1. Instale as dependências do projeto:
    ```sh
    npm install
