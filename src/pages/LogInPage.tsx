@@ -12,8 +12,10 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
   const { login } = useAuth();
   const form = useForm({
     defaultValues: {
@@ -22,8 +24,9 @@ const LoginPage = () => {
     },
   });
 
-  const onSubmit = (data: { username: string; password: string }) => {
-    login(data.username, data.password);
+  const onSubmit = async (data: { username: string; password: string }) => {
+    await login(data.username, data.password);
+    navigate("/feed");
   };
 
   return (
