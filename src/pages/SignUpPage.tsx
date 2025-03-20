@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { doCreateUserWithEmailAndPassword } from "@/firebase/fireAuth";
 
 const SignUpPage = () => {
   const form = useForm({
@@ -20,9 +21,10 @@ const SignUpPage = () => {
     },
   });
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit = (data: { username: string; password: string }) => {
+    doCreateUserWithEmailAndPassword(data.username, data.password);
   };
+
   return (
     <LandingLayout>
       <Card className="flex justify-center flex-col w-[95%] max-w-[600px] my-8 p-2">

@@ -11,8 +11,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { useAuth } from "@/contexts/AuthContext";
 
-const SignUpPage = () => {
+const LoginPage = () => {
+  const { login } = useAuth();
   const form = useForm({
     defaultValues: {
       username: "",
@@ -20,8 +22,8 @@ const SignUpPage = () => {
     },
   });
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit = (data: { username: string; password: string }) => {
+    login(data.username, data.password);
   };
 
   return (
@@ -89,4 +91,4 @@ const SignUpPage = () => {
   );
 };
 
-export default SignUpPage;
+export default LoginPage;
