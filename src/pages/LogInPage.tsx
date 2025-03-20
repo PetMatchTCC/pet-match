@@ -11,8 +11,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
-const SignUpPage = () => {
+const LoginPage = () => {
+  const navigate = useNavigate();
+  const { login } = useAuth();
   const form = useForm({
     defaultValues: {
       username: "",
@@ -20,8 +24,9 @@ const SignUpPage = () => {
     },
   });
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit = async (data: { username: string; password: string }) => {
+    await login(data.username, data.password);
+    navigate("/feed");
   };
 
   return (
@@ -89,4 +94,4 @@ const SignUpPage = () => {
   );
 };
 
-export default SignUpPage;
+export default LoginPage;
