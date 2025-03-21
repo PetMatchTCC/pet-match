@@ -7,10 +7,11 @@ import LogInPage from "@/pages/LogInPage.tsx";
 import ProtectedRoute from "./protectedRoute";
 import FeedPage from "@/pages/FeedPage";
 import { useAuth } from "@/contexts/AuthContext";
+import PawLoader from "@/components/custom/PawLoader";
 
 export function RoutesIndex() {
   const { loading } = useAuth();
-  if (loading) return <p>Carregando</p>;
+  if (loading) return <PawLoader />;
   return (
     <BrowserRouter>
       <Routes>

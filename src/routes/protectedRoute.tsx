@@ -1,11 +1,12 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import PawLoader from "@/components/custom/PawLoader";
 
 const ProtectedRoute = () => {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return <p>Carregando...</p>;
+    return <PawLoader />;
   }
 
   return user ? (

@@ -29,11 +29,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   const login = async (email: string, password: string) => {
-    await doSignInWithEmailAndPassword(email, password);
+    try{
+      setLoading(true);
+      await doSignInWithEmailAndPassword(email, password);
+    } catch (err) {
+      console.log("Erro ao fazer login: ", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const logout = async () => {
-    await doSignOut();
+    try{
+      setLoading(true);
+      await doSignOut();
+    } catch (err){
+      console.log("Erro ao sair: ", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
