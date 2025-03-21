@@ -1,14 +1,11 @@
-import { Button } from "@/components/ui/button";
-import { useAuth } from "@/contexts/AuthContext";
+import MainLayout from "@/components/layouts/MainLayout";
 
 const FeedPage = () => {
-  const { logout } = useAuth();
   return (
-    <>
-      <h1>Este é o feed</h1>
-      <h2>Você está logado!</h2>
-      <Button onClick={logout}>Sair </Button>
-    </>
+    <MainLayout>
+      <h1 className="font-bold text-4xl mt-8">Este é o feed</h1>
+      <h2 className="font-semibold">Você está logado!</h2>
+    </MainLayout>
   );
 };
 
