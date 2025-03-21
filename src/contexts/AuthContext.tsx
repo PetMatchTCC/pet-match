@@ -29,7 +29,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   const login = async (email: string, password: string) => {
-    try{
+    try {
       setLoading(true);
       await doSignInWithEmailAndPassword(email, password);
     } catch (err) {
@@ -40,10 +40,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const logout = async () => {
-    try{
+    try {
       setLoading(true);
       await doSignOut();
-    } catch (err){
+    } catch (err) {
       console.log("Erro ao sair: ", err);
     } finally {
       setLoading(false);
