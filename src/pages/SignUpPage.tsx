@@ -11,8 +11,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { doCreateUserWithEmailAndPassword } from "@/firebase/fireAuth";
+import { useNavigate } from "react-router-dom";
 
 const SignUpPage = () => {
+  const navigate = useNavigate();
   const form = useForm({
     defaultValues: {
       username: "",
@@ -20,9 +23,11 @@ const SignUpPage = () => {
     },
   });
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit = async (data: { username: string; password: string }) => {
+    await doCreateUserWithEmailAndPassword(data.username, data.password);
+    navigate("/feed");
   };
+
   return (
     <LandingLayout>
       <Card className="flex justify-center flex-col w-[95%] max-w-[600px] my-8 p-2">
