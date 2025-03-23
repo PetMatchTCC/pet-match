@@ -37,7 +37,7 @@ const AppSidebar = () => {
     },
   ];
   return (
-    <Sidebar>
+    <Sidebar collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>PetMatch</SidebarGroupLabel>
