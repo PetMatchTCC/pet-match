@@ -70,7 +70,7 @@ const AdopterSignUpPage = () => {
                       <FormLabel htmlFor="cpf">CPF</FormLabel>
                       <FormControl>
                         <Input
-                          id="username"
+                          id="cpf"
                           placeholder="123.456.789-00"
                           className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                           {...field}
@@ -82,7 +82,7 @@ const AdopterSignUpPage = () => {
                 />
                 <FormField
                   control={form.control}
-                  name="username"
+                  name="email"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel htmlFor="email">E-mail</FormLabel>
