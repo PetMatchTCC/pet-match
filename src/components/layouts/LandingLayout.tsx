@@ -9,7 +9,7 @@ const LandingLayout = ({ children }: LandingLayoutProps) => {
   return (
     <>
       <LandingNavbar />
-      <div className="items-center justify-center w-full flex flex-col p-6l">
+      <div className="items-center justify-center w-full flex flex-col p-6">
         {children}
       </div>
     </>
