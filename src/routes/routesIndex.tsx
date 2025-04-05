@@ -10,6 +10,7 @@ import PawLoader from "@/components/custom/PawLoader";
 import SignUpIndex from "@/pages/SignUpIndex";
 import ShelterSignUpPage from "@/pages/ShelterSignUpPage";
 import AdopterSignUpPage from "@/pages/AdopterSignUpPage";
+import UserPage from "@/pages/UserPage";
 
 export function RoutesIndex() {
   const { loading } = useAuth();
@@ -53,6 +54,10 @@ export function RoutesIndex() {
           <Route
             path="/feed"
             element={<FeedPage />}
+          />
+          <Route
+            path="/user/:uid"
+            element={<UserPage />}
           />
         </Route>
       </Routes>
