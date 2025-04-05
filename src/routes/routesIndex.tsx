@@ -12,6 +12,7 @@ import ShelterSignUpPage from "@/pages/ShelterSignUpPage";
 import AdopterSignUpPage from "@/pages/AdopterSignUpPage";
 import UserPage from "@/pages/UserPage";
 import MyProfilePage from "@/pages/MyProfilePage";
+import ReportPage from "@/pages/ReportPage";
 
 export function RoutesIndex() {
   const { loading } = useAuth();
@@ -63,6 +64,10 @@ export function RoutesIndex() {
           <Route
             path="/me"
             element={<MyProfilePage />}
+          />
+          <Route
+            path="/report"
+            element={<ReportPage />}
           />
         </Route>
       </Routes>

@@ -10,7 +10,15 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/contexts/AuthContext";
-import { Bell, Home, LogOut, Send, Settings } from "lucide-react";
+import {
+  Bell,
+  Home,
+  LogOut,
+  Send,
+  Settings,
+  ShieldBan,
+  UserCircle,
+} from "lucide-react";
 
 const AppSidebar = () => {
   const { logout } = useAuth();
@@ -29,6 +37,11 @@ const AppSidebar = () => {
       title: "Notificações",
       url: "/notifications",
       icon: Bell,
+    },
+    {
+      title: "Reportar",
+      url: "/report",
+      icon: ShieldBan,
     },
     {
       title: "Configurações",
@@ -59,6 +72,14 @@ const AppSidebar = () => {
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild>
+              <a href="/me">
+                <UserCircle />
+                <span>Meu Perfil</span>
+              </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton onClick={logout}>
               <LogOut />
