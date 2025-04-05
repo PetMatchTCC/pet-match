@@ -2,12 +2,14 @@ import { Routes, BrowserRouter, Route } from "react-router-dom";
 import LandingPage from "@/pages/LandingPage";
 import AboutPage from "@/pages/AboutPage";
 import ContactPage from "@/pages/ContactPage";
-import SignUpPage from "@/pages/SignUpPage.tsx";
 import LogInPage from "@/pages/LogInPage.tsx";
 import ProtectedRoute from "./protectedRoute";
 import FeedPage from "@/pages/FeedPage";
 import { useAuth } from "@/contexts/AuthContext";
 import PawLoader from "@/components/custom/PawLoader";
+import SignUpIndex from "@/pages/SignUpIndex";
+import ShelterSignUpPage from "@/pages/ShelterSignUpPage";
+import AdopterSignUpPage from "@/pages/AdopterSignUpPage";
 
 export function RoutesIndex() {
   const { loading } = useAuth();
@@ -37,7 +39,15 @@ export function RoutesIndex() {
         />
         <Route
           path="/signup"
-          element={<SignUpPage />}
+          element={<SignUpIndex />}
+        />
+        <Route
+          path="/shelter"
+          element={<ShelterSignUpPage />}
+        />
+        <Route
+          path="/adopter"
+          element={<AdopterSignUpPage />}
         />
         <Route element={<ProtectedRoute />}>
           <Route
