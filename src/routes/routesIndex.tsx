@@ -13,6 +13,7 @@ import AdopterSignUpPage from "@/pages/AdopterSignUpPage";
 import UserPage from "@/pages/UserPage";
 import MyProfilePage from "@/pages/MyProfilePage";
 import ReportPage from "@/pages/ReportPage";
+import NotificationPage from "@/pages/NotificationsPage";
 
 export function RoutesIndex() {
   const { loading } = useAuth();
@@ -64,6 +65,10 @@ export function RoutesIndex() {
           <Route
             path="/me"
             element={<MyProfilePage />}
+          />
+          <Route
+            path="/notifications"
+            element={<NotificationPage />}
           />
           <Route
             path="/report"
