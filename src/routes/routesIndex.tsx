@@ -15,6 +15,7 @@ import MyProfilePage from "@/pages/MyProfilePage";
 import ReportPage from "@/pages/ReportPage";
 import NotificationPage from "@/pages/NotificationsPage";
 import ChatPage from "@/pages/ChatPage";
+import SettingsPage from "@/pages/SettingsPage";
 
 export function RoutesIndex() {
   const { loading } = useAuth();
@@ -78,6 +79,10 @@ export function RoutesIndex() {
           <Route
             path="/report"
             element={<ReportPage />}
+          />
+          <Route
+            path="/settings"
+            element={<SettingsPage />}
           />
         </Route>
       </Routes>
