@@ -9,16 +9,16 @@ const ReportPage = () => {
     <MainLayout>
       <h1 className="text-xl sm:text-5xl mt-8 font-bold text-orange-500">PetGuard</h1>
       <h2 className="font-semibold my-2 text-neutral-900">Sistema de denúncias do PetMatch</h2>
-      <Card className="p-4 sm:w-2/3 w-11/12 mx-4 ">
+      <Card className="p-4 sm:w-2/3 w-11/12 mt-4 mb-6">
         <Tabs defaultValue="new" className="flex flex-col items-center w-full">
           <TabsList className="align-middle">
             <TabsTrigger value="new">Nova denúncia</TabsTrigger>
             <TabsTrigger value="search">Buscar por código </TabsTrigger>
           </TabsList>
-          <TabsContent value="new" className="p-1 ">
+          <TabsContent value="new" className="p-1 w-full">
             <NewReportTab />
           </TabsContent>
-          <TabsContent value="search" className="p-1 flex flex-col ">
+          <TabsContent value="search" className="p-1 w-full">
             <SearchReportTab />
           </TabsContent>
         </Tabs>

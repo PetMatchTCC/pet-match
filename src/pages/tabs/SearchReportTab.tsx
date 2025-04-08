@@ -15,16 +15,18 @@ const SearchReportTab: React.FC = () => {
   };
 
   return (
-    <div className="gap-4">
+    <div className="gap-4 items-center flex flex-col justify-center w-full mb-8">
       <h3 className="text-xl font-medium my-2">Buscar denúncia por código</h3>
-      <Input
-        id="id_denuncia"
-        placeholder="Digite o código da denúncia"
-        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-        onChange={handleChange}
-        value={reportId}
-      />
-      <Button className="my-2 self-end w-full bg-orange-500 hover:bg-orange-600" onClick={handleSearch}>Buscar</Button>
+      <div className="w-full max-w-md">
+        <Input
+          id="id_denuncia"
+          placeholder="Digite o código da denúncia"
+          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+          onChange={handleChange}
+          value={reportId}
+        />
+        <Button className="my-2 self-end w-full bg-orange-500 hover:bg-orange-600" onClick={handleSearch}>Buscar</Button>
+      </div>
     </div>
   );
 }
