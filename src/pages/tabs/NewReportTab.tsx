@@ -2,6 +2,9 @@ import { Button } from "@/components/ui/button";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage, Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { SelectTrigger, Select, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import { db } from "@/firebase/fireConfig";
+import { push, ref, set } from "firebase/database";
+import { FormInput } from "lucide-react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 interface FormInput {
@@ -19,14 +22,33 @@ const NewReportTab = () => {
     },
   })
 
+  const handleInsertReport = async (data: FormInput): Promise<void> => {
+    try {
+
+      const dbRef = ref(db, 'report');
+      const newReportRef = push(dbRef);
+
+      await set(newReportRef, data);
+
+      await navigator.clipboard.writeText(newReportRef.key);
+
+      console.log('Relatório registrado com sucesso! ID:', newReportRef.key);
+
+      alert(`Denúncia enviada com sucesso! Confira o estado da denúncia através da busca por ID: ${newReportRef.key}`)
+    }
+    catch (err) {
+      alert(`Erro: ${err}`);
+    }
+
+  }
+
   const onSubmit: SubmitHandler<FormInput> = (data) => {
-    console.log(data)
+    handleInsertReport(data)
   }
 
   return (
     <>
       <h3 className="text-xl font-medium my-3 text-center">Registrar nova denúncia</h3>
-
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -99,9 +121,6 @@ const NewReportTab = () => {
           </div>
         </form>
       </Form>
-
-
-
     </>
   );
 }
