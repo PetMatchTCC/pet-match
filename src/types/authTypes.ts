@@ -4,6 +4,7 @@ export interface AdopterAuthFormValues {
   cpf: string; // 123.456.789-00
   birthday: string; // DD-MM-AAAA
   password: string;
+  repass: string;
   phone?: string; // (00) 12345-6789
   address?: Address; // Rua, 123, Cidade. BRASIL.
 }
@@ -13,6 +14,7 @@ export interface ShelterAuthFormValues {
   username: string;
   cnpj: string; // XX.XXX.XXX/0001-XX
   password: string;
+  repass: string;
   phone?: string; // (00) 12345-6789
   address: Address; // Rua, 123, Cidade. BRASIL.
 }
