@@ -10,16 +10,19 @@ import {
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 interface FormInput {
   reportId: string;
 }
 
 const SearchReportTab: React.FC = () => {
+  const navigate = useNavigate();
+
   const form = useForm<FormInput>({ defaultValues: { reportId: "" } });
 
   const onSubmit: SubmitHandler<FormInput> = (data) => {
-    console.log(data.reportId);
+    navigate(`/denounce/${data.reportId}`);
   };
 
   return (
