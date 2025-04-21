@@ -6,7 +6,7 @@ export interface AdopterAuthFormValues {
   password: string;
   repass: string;
   phone?: string; // (00) 12345-6789
-  address?: Address; // Rua, 123, Cidade. BRASIL.
+  address?: string; // Rua, 123, Cidade. BRASIL.
 }
 
 export interface ShelterAuthFormValues {
@@ -23,6 +23,8 @@ export interface LoginFormValues {
   email: string;
   password: string;
 }
+
+// TODO: implementar uma versão mais completa do cadastro de endereço
 
 type Address = {
   country: "Brasil" | "Exterior";
