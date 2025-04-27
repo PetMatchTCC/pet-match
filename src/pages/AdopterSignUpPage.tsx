@@ -28,6 +28,7 @@ const AdopterSignUpPage = () => {
       email: "",
       username: "",
       cpf: "",
+      phone: "",
       birthday: "",
       address: "",
       password: "",
@@ -59,7 +60,7 @@ const AdopterSignUpPage = () => {
                   name="username"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="username">Nome</FormLabel>
+                      <FormLabel htmlFor="username">Nome*</FormLabel>
                       <FormControl>
                         <Input
                           id="username"
@@ -77,7 +78,7 @@ const AdopterSignUpPage = () => {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="email">E-mail</FormLabel>
+                      <FormLabel htmlFor="email">E-mail*</FormLabel>
                       <FormControl>
                         <Input
                           id="email"
@@ -90,13 +91,41 @@ const AdopterSignUpPage = () => {
                     </FormItem>
                   )}
                 />
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor="phone">Telefone/Celular</FormLabel>
+                      <FormControl>
+                        <InputMask
+                          mask="(99) 99999-9999"
+                          value={field.value}
+                          onChange={field.onChange}
+                          onBlur={field.onBlur}
+                        >
+                          {(inputProps: any) => (
+                            <Input
+                              {...inputProps}
+                              id="phone"
+                              placeholder="(11) 91234-5678"
+                              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                              ref={field.ref}
+                            />
+                          )}
+                        </InputMask>
+                      </FormControl>
+                      <FormMessage className="text-red-500 text-sm" />
+                    </FormItem>
+                  )}
+                />
                 <Separator className="my-4" />
                 <FormField
                   control={form.control}
                   name="cpf"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="cpf">CPF</FormLabel>
+                      <FormLabel htmlFor="cpf">CPF*</FormLabel>
                       <FormControl>
                         <InputMask
                           mask="999.999.999-99"
@@ -125,7 +154,7 @@ const AdopterSignUpPage = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel htmlFor="birhtday">
-                        Data de nascimento
+                        Data de nascimento*
                       </FormLabel>
                       <FormControl>
                         <Input
@@ -165,7 +194,7 @@ const AdopterSignUpPage = () => {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="password">Senha</FormLabel>
+                      <FormLabel htmlFor="password">Senha*</FormLabel>
                       <FormControl>
                         <Input
                           id="password"
@@ -184,7 +213,7 @@ const AdopterSignUpPage = () => {
                   name="repass"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="repass">Repita a senha</FormLabel>
+                      <FormLabel htmlFor="repass">Repita a senha*</FormLabel>
                       <FormControl>
                         <Input
                           id="repass"
