@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { ShelterAuthFormValues } from "@/types/authTypes";
 import { Separator } from "@/components/ui/separator";
 import InputMask from "react-input-mask";
+import { UserRoundPlus } from "lucide-react";
 
 const ShelterSignUpPage = () => {
   const navigate = useNavigate();
@@ -39,7 +40,8 @@ const ShelterSignUpPage = () => {
   return (
     <LandingLayout>
       <Card className="flex justify-center flex-col w-[95%] max-w-[600px] my-8 p-2">
-        <CardTitle>
+        <CardTitle className="flex items-center justify-center text-primary gap-1">
+          <UserRoundPlus size={28} />
           <h1 className="text-3xl font-bold text-center my-6">
             Cadastro de abrigo
           </h1>

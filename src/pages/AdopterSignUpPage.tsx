@@ -17,6 +17,7 @@ import InputMask from "react-input-mask";
 import { handleAdopterCreation } from "@/services/authService";
 import { AdopterAuthFormValues } from "@/types/authTypes";
 import { useAuth } from "@/contexts/AuthContext";
+import { UserRoundPlus } from "lucide-react";
 
 const AdopterSignUpPage = () => {
   const { setLoading } = useAuth();
@@ -43,7 +44,8 @@ const AdopterSignUpPage = () => {
   return (
     <LandingLayout>
       <Card className="flex justify-center flex-col w-[95%] max-w-[600px] my-8 p-2">
-        <CardTitle>
+        <CardTitle className="flex items-center justify-center text-primary gap-1">
+          <UserRoundPlus size={28} />
           <h1 className="text-3xl font-bold text-center my-6">
             Cadastro de adotante
           </h1>

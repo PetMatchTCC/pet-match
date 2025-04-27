@@ -36,10 +36,7 @@ const LoginPage = () => {
     <LandingLayout>
       <Card className="flex justify-center flex-col w-[95%] max-w-[600px] my-8 p-2">
         <CardTitle className="flex items-center justify-center text-primary gap-1">
-          <LogIn
-            className="x"
-            size={28}
-          />
+          <LogIn size={28} />
           <h1 className="text-3xl font-bold text-center my-6">Login</h1>
         </CardTitle>
         <CardContent className="flex justify-center w-full">
