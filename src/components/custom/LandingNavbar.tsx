@@ -29,7 +29,7 @@ const LandingNavbar = () => {
   }, []);
 
   return (
-    <header className="bg-white shadow-md py-4">
+    <header className="bg-white shadow-md py-4 sticky top-0">
       <nav className="max-w-7xl mx-auto px-6 flex justify-start items-center">
         <Link
           to="/home"
