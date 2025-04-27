@@ -10,9 +10,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { LogIn } from "lucide-react";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -29,10 +30,16 @@ const LoginPage = () => {
     navigate("/feed");
   };
 
+  const emailRegex: RegExp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+
   return (
     <LandingLayout>
       <Card className="flex justify-center flex-col w-[95%] max-w-[600px] my-8 p-2">
-        <CardTitle>
+        <CardTitle className="flex items-center justify-center text-primary gap-1">
+          <LogIn
+            className="x"
+            size={28}
+          />
           <h1 className="text-3xl font-bold text-center my-6">Login</h1>
         </CardTitle>
         <CardContent className="flex justify-center w-full">
@@ -45,6 +52,13 @@ const LoginPage = () => {
                 <FormField
                   control={form.control}
                   name="username"
+                  rules={{
+                    required: "Preencha seu email",
+                    pattern: {
+                      value: emailRegex,
+                      message: "Digite um e-mail válido",
+                    },
+                  }}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel htmlFor="username">E-mail</FormLabel>
@@ -63,6 +77,9 @@ const LoginPage = () => {
                 <FormField
                   control={form.control}
                   name="password"
+                  rules={{
+                    required: "Digite sua senha",
+                  }}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel htmlFor="password">Senha</FormLabel>
@@ -89,6 +106,16 @@ const LoginPage = () => {
             </form>
           </Form>
         </CardContent>
+        <CardFooter className="items-center flex gap-1 justify-center">
+          <span className="font-semibold text-neutral-600">
+            Ainda não tem uma conta?
+          </span>
+          <Link to="/signup">
+            <span className="font-semibold text-primary underline">
+              Crie agora mesmo
+            </span>
+          </Link>
+        </CardFooter>
       </Card>
     </LandingLayout>
   );

@@ -33,7 +33,7 @@ const LandingNavbar = () => {
       <nav className="max-w-7xl mx-auto px-6 flex justify-start items-center">
         <Link
           to="/home"
-          className="text-2xl font-bold text-gray-800 flex flex-row gap-2"
+          className="text-2xl font-bold text-primary flex flex-row gap-2"
         >
           <img
             src={"paw.svg"}
