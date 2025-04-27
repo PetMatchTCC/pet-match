@@ -13,15 +13,21 @@ import { useForm } from "react-hook-form";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { doCreateUserWithEmailAndPassword } from "@/firebase/fireAuth";
 import { useNavigate } from "react-router-dom";
+import { ShelterAuthFormValues } from "@/types/authTypes";
+import { Separator } from "@/components/ui/separator";
+import InputMask from "react-input-mask";
 
 const ShelterSignUpPage = () => {
   const navigate = useNavigate();
-  const form = useForm({
+  const form = useForm<ShelterAuthFormValues>({
     defaultValues: {
       username: "",
       email: "",
       cnpj: "",
       password: "",
+      repass: "",
+      address: "",
+      phone: "",
     },
   });
 
@@ -34,7 +40,9 @@ const ShelterSignUpPage = () => {
     <LandingLayout>
       <Card className="flex justify-center flex-col w-[95%] max-w-[600px] my-8 p-2">
         <CardTitle>
-          <h1 className="text-3xl font-bold text-center my-6">Cadastro de abrigo</h1>
+          <h1 className="text-3xl font-bold text-center my-6">
+            Cadastro de abrigo
+          </h1>
         </CardTitle>
         <CardContent className="flex justify-center w-full">
           <Form {...form}>
@@ -48,11 +56,11 @@ const ShelterSignUpPage = () => {
                   name="username"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="username">Nome da instituição</FormLabel>
+                      <FormLabel htmlFor="username">Nome do abrigo*</FormLabel>
                       <FormControl>
                         <Input
                           id="username"
-                          placeholder="Digite o nome da sua instituição"
+                          placeholder="Qual o nome do seu abrigo?"
                           className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                           {...field}
                         />
@@ -66,11 +74,11 @@ const ShelterSignUpPage = () => {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="email">E-mail</FormLabel>
+                      <FormLabel htmlFor="email">E-mail*</FormLabel>
                       <FormControl>
                         <Input
                           id="email"
-                          placeholder="Digite o e-mail da instituição"
+                          placeholder="Digite seu e-mail"
                           className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                           {...field}
                         />
@@ -84,11 +92,43 @@ const ShelterSignUpPage = () => {
                   name="cnpj"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="cnpj">CNPJ</FormLabel>
+                      <FormLabel htmlFor="cnpj">CNPJ*</FormLabel>
+                      <FormControl>
+                        <InputMask
+                          mask="99.999.999/9999-99"
+                          value={field.value}
+                          onChange={field.onChange}
+                          onBlur={field.onBlur}
+                        >
+                          {(inputProps: any) => (
+                            <Input
+                              {...inputProps}
+                              id="cnpj"
+                              placeholder="__.___.___/____-__"
+                              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                              ref={field.ref}
+                            />
+                          )}
+                        </InputMask>
+                      </FormControl>
+                      <FormMessage className="text-red-500 text-sm" />
+                    </FormItem>
+                  )}
+                />
+                <Separator className="my-4" />
+                <FormField
+                  control={form.control}
+                  name="address"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor="address">
+                        Endereço do abrigo*
+                      </FormLabel>
                       <FormControl>
                         <Input
-                          id="cnpj"
-                          placeholder="XX.XXX.XXX/0001-XX"
+                          id="address"
+                          type="text"
+                          placeholder="Rua tal, Cidade, UF. BRASIL."
                           className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                           {...field}
                         />
@@ -99,14 +139,62 @@ const ShelterSignUpPage = () => {
                 />
                 <FormField
                   control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor="phone">Telefone</FormLabel>
+                      <FormControl>
+                        <InputMask
+                          mask="(99) 99999-9999"
+                          value={field.value}
+                          onChange={field.onChange}
+                          onBlur={field.onBlur}
+                        >
+                          {(inputProps: any) => (
+                            <Input
+                              {...inputProps}
+                              id="phone"
+                              placeholder="(11) 91234-5678"
+                              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                              ref={field.ref}
+                            />
+                          )}
+                        </InputMask>
+                      </FormControl>
+                      <FormMessage className="text-red-500 text-sm" />
+                    </FormItem>
+                  )}
+                />
+                <Separator className="my-4" />
+                <FormField
+                  control={form.control}
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="password">Senha</FormLabel>
+                      <FormLabel htmlFor="password">Senha*</FormLabel>
                       <FormControl>
                         <Input
                           id="password"
                           placeholder="Crie uma senha"
+                          type="password"
+                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage className="text-red-500 text-sm" />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="repass"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor="repass">Repita a senha*</FormLabel>
+                      <FormControl>
+                        <Input
+                          id="repass"
+                          placeholder="Repita sua senha"
                           type="password"
                           className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                           {...field}

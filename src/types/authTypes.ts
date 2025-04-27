@@ -16,7 +16,7 @@ export interface ShelterAuthFormValues {
   password: string;
   repass: string;
   phone?: string; // (00) 12345-6789
-  address: Address; // Rua, 123, Cidade. BRASIL.
+  address: string; // Rua, 123, Cidade. BRASIL.
 }
 
 export interface LoginFormValues {
