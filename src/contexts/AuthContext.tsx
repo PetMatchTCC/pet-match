@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, SetStateAction, useContext, useEffect, useState } from "react";
 import { User, onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/firebase/fireConfig";
 import { doSignInWithEmailAndPassword, doSignOut } from "@/firebase/fireAuth";
@@ -6,6 +6,7 @@ import { doSignInWithEmailAndPassword, doSignOut } from "@/firebase/fireAuth";
 interface AuthContextType {
   user: User | null;
   loading: boolean;
+  setLoading: React.Dispatch<SetStateAction<boolean>>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 }
@@ -51,7 +52,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, setLoading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
