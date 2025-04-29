@@ -37,9 +37,37 @@ const AdopterSignUpPage = () => {
     },
   });
 
+  const validateCPF = (cpf: string): boolean => {
+    cpf = cpf.replace(/[^\d]+/g, '');
+    if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+
+    let sum = 0;
+    let remainder;
+
+    for (let i = 1; i <= 9; i++) {
+      sum += parseInt(cpf.substring(i - 1, i)) * (11 - i);
+    }
+    remainder = (sum * 10) % 11;
+    if (remainder === 10 || remainder === 11) remainder = 0;
+    if (remainder !== parseInt(cpf.substring(9, 10))) return false;
+
+    sum = 0;
+
+    for (let i = 1; i <= 10; i++) {
+      sum += parseInt(cpf.substring(i - 1, i)) * (12 - i);
+    }
+    remainder = (sum * 10) % 11;
+    if (remainder === 10 || remainder === 11) remainder = 0;
+    if (remainder !== parseInt(cpf.substring(10, 11))) return false;
+
+    return true;
+  };
+
   const onSubmit = async (data: AdopterAuthFormValues) => {
     await handleAdopterCreation(data, setLoading, navigate);
   };
+
+  const emailRegex: RegExp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 
   return (
     <LandingLayout>
@@ -60,6 +88,13 @@ const AdopterSignUpPage = () => {
                 <FormField
                   control={form.control}
                   name="username"
+                  rules={{
+                    required: "Escolha um nome para a conta",
+                    minLength: {
+                      value: 5,
+                      message: "Escolha um nome maior"
+                    }
+                  }}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel htmlFor="username">Nome*</FormLabel>
@@ -78,6 +113,13 @@ const AdopterSignUpPage = () => {
                 <FormField
                   control={form.control}
                   name="email"
+                  rules={{
+                    required: "É necessário um e-mail para criar a conta",
+                    pattern: {
+                      value: emailRegex,
+                      message: "E-mail em formato inválido"
+                    }
+                  }}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel htmlFor="email">E-mail*</FormLabel>
@@ -125,6 +167,10 @@ const AdopterSignUpPage = () => {
                 <FormField
                   control={form.control}
                   name="cpf"
+                  rules={{
+                    required: "Por favor, informe seu CPF",
+                    validate: (value) => validateCPF(value) || "CPF inválido"
+                  }}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel htmlFor="cpf">CPF*</FormLabel>
@@ -153,6 +199,9 @@ const AdopterSignUpPage = () => {
                 <FormField
                   control={form.control}
                   name="birthday"
+                  rules={{
+                    required: "É obrigatório informar a data de nascimento"
+                  }}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel htmlFor="birhtday">
@@ -194,6 +243,13 @@ const AdopterSignUpPage = () => {
                 <FormField
                   control={form.control}
                   name="password"
+                  rules={{
+                    required: "Escolha uma senha",
+                    minLength: {
+                      value: 8,
+                      message: "Sua senha é muito curta"
+                    },
+                  }}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel htmlFor="password">Senha*</FormLabel>
@@ -213,6 +269,10 @@ const AdopterSignUpPage = () => {
                 <FormField
                   control={form.control}
                   name="repass"
+                  rules={{
+                    required: "Por favor, preencha novamente a senha",
+                    validate: (value) => value === form.getValues("password") || "As senhas não coincidem"
+                  }}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel htmlFor="repass">Repita a senha*</FormLabel>
