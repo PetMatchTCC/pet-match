@@ -39,6 +39,16 @@ const SignUpIndex = () => {
           );
         })}
       </div>
+      <div className="gap-1 flex flex-row">
+        <span className="font-semibold text-neutral-600">
+          Já tem uma conta?
+        </span>
+        <Link to="/login">
+          <span className="font-semibold text-primary underline">
+            Faça login
+          </span>
+        </Link>
+      </div>
     </LandingLayout>
   );
 };
