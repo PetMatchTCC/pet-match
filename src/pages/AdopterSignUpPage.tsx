@@ -38,7 +38,7 @@ const AdopterSignUpPage = () => {
   });
 
   const validateCPF = (cpf: string): boolean => {
-    cpf = cpf.replace(/[^\d]+/g, '');
+    cpf = cpf.replace(/[^\d]+/g, "");
     if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
 
     let sum = 0;
@@ -92,8 +92,8 @@ const AdopterSignUpPage = () => {
                     required: "Escolha um nome para a conta",
                     minLength: {
                       value: 5,
-                      message: "Escolha um nome maior"
-                    }
+                      message: "Escolha um nome maior",
+                    },
                   }}
                   render={({ field }) => (
                     <FormItem>
@@ -117,8 +117,8 @@ const AdopterSignUpPage = () => {
                     required: "É necessário um e-mail para criar a conta",
                     pattern: {
                       value: emailRegex,
-                      message: "E-mail em formato inválido"
-                    }
+                      message: "E-mail em formato inválido",
+                    },
                   }}
                   render={({ field }) => (
                     <FormItem>
@@ -169,7 +169,7 @@ const AdopterSignUpPage = () => {
                   name="cpf"
                   rules={{
                     required: "Por favor, informe seu CPF",
-                    validate: (value) => validateCPF(value) || "CPF inválido"
+                    validate: (value) => validateCPF(value) || "CPF inválido",
                   }}
                   render={({ field }) => (
                     <FormItem>
@@ -200,7 +200,7 @@ const AdopterSignUpPage = () => {
                   control={form.control}
                   name="birthday"
                   rules={{
-                    required: "É obrigatório informar a data de nascimento"
+                    required: "É obrigatório informar a data de nascimento",
                   }}
                   render={({ field }) => (
                     <FormItem>
@@ -247,7 +247,7 @@ const AdopterSignUpPage = () => {
                     required: "Escolha uma senha",
                     minLength: {
                       value: 8,
-                      message: "Sua senha é muito curta"
+                      message: "Sua senha é muito curta",
                     },
                   }}
                   render={({ field }) => (
@@ -271,7 +271,9 @@ const AdopterSignUpPage = () => {
                   name="repass"
                   rules={{
                     required: "Por favor, preencha novamente a senha",
-                    validate: (value) => value === form.getValues("password") || "As senhas não coincidem"
+                    validate: (value) =>
+                      value === form.getValues("password") ||
+                      "As senhas não coincidem",
                   }}
                   render={({ field }) => (
                     <FormItem>
