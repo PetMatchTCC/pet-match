@@ -41,6 +41,10 @@
 
 - `feat/form-validation`: Implementação da validação dos formulários de cadastro e tratamento de erro.
 
+- `feat/pet-card`: Implementação dos cards de pets no feed
+
+- `feat/pet-form`: Implementação do sistema de cadastro de pets em perfis do tipo abrigo
+
 - `feat/routes`: Desenvolvimento e configuração do roteamento da aplicação.
 
 - `feat/realtime-db`: Implementação das funcionalidades do Realtime Dabase.
