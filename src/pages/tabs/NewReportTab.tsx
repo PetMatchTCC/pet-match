@@ -19,6 +19,7 @@ import { db } from "@/firebase/fireConfig";
 import { push, ref, set } from "firebase/database";
 import { MessageSquareWarning } from "lucide-react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 interface FormInput {
   topic: string;
@@ -27,6 +28,9 @@ interface FormInput {
 }
 
 const NewReportTab = () => {
+
+  const navigate = useNavigate();
+
   const form = useForm<FormInput>({
     defaultValues: {
       topic: "",
@@ -49,8 +53,12 @@ const NewReportTab = () => {
         newReportRef.key
       );
 
+      const reportKey = newReportRef.key;
+
+      navigate(`/denounce/${reportKey}`);
+
       alert(
-        `Denúncia enviada com sucesso! Confira o estado da denúncia através da busca por ID: ${newReportRef.key}`
+        `Denúncia enviada com sucesso! Confira o estado da denúncia através da busca por ID: ${reportKey}`
       );
     } catch (err) {
       alert(`Erro: ${err}`);
