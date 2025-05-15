@@ -1,6 +1,5 @@
 import MainLayout from "@/components/layouts/MainLayout";
 import { useParams } from "react-router-dom";
-import { Plus } from 'lucide-react';
 
 const UserPage = () => {
   const { uid } = useParams();
@@ -98,14 +97,6 @@ const UserPage = () => {
         </div>
 
       </div>
-
-      <button
-        className="fixed bottom-6 right-6 z-10 bg-orange-500 text-white rounded-lg px-4 py-2 flex items-center gap-2 shadow-lg hover:bg-orange-600 transition-colors duration-200"
-        aria-label="Adicionar novo pet"
-      >
-        <Plus />
-        Adicionar Pet
-      </button>
     </MainLayout>
   );
 };
