@@ -10,10 +10,6 @@ const LandingNavbar = () => {
       path: "/home",
     },
     {
-      text: "Sobre nós",
-      path: "/about",
-    },
-    {
       text: "Contato",
       path: "/contact",
     },
