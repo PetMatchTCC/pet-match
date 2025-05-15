@@ -21,13 +21,16 @@
    npm install
    ```
 
-4. **Iniciar o servidor**: Após instaladas as dependências, execute na raiz do projeto:
+4. **Incluir o arquivo .env ao projeto**
+   
+
+5. **Iniciar o servidor**: Após instaladas as dependências, execute na raiz do projeto:
 
    ```shell
    npm run dev
    ```
 
-5. **Interromper o servidor**: Quando desejar interromper o servidor, basta pressionar `Ctrl + C` no terminal.
+6. **Interromper o servidor**: Quando desejar interromper o servidor, basta pressionar `Ctrl + C` no terminal.
 
 ## Descrição das branches
 
