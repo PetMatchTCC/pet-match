@@ -18,7 +18,6 @@ const MyProfilePage = () => {
           }}
         />
         <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md overflow-hidden mt-8">
-
           <div className="profile-header relative h-48 flex items-end">
             <div className="absolute -bottom-16 left-6 w-32 h-32 rounded-full border-4 border-white overflow-hidden bg-white">
               <img
@@ -39,45 +38,62 @@ const MyProfilePage = () => {
 
             <div className="mt-4">
               <p className="text-gray-700">
-                Apaixonado por animais e voluntário em ONGs de proteção animal. Adoro ajudar pets a encontrarem lares amorosos.
+                Apaixonado por animais e voluntário em ONGs de proteção animal.
+                Adoro ajudar pets a encontrarem lares amorosos.
               </p>
             </div>
 
             <div className="mt-6 flex gap-6 text-center">
               <div>
-                <span className="block text-2xl font-bold text-orange-500">12</span>
+                <span className="block text-2xl font-bold text-orange-500">
+                  12
+                </span>
                 <span className="text-sm text-gray-500">Pets Postados</span>
               </div>
               <div>
-                <span className="block text-2xl font-bold text-orange-500">350</span>
+                <span className="block text-2xl font-bold text-orange-500">
+                  350
+                </span>
                 <span className="text-sm text-gray-500">Seguidores</span>
               </div>
               <div>
-                <span className="block text-2xl font-bold text-orange-500">15</span>
+                <span className="block text-2xl font-bold text-orange-500">
+                  15
+                </span>
                 <span className="text-sm text-gray-500">Curtidas</span>
               </div>
             </div>
 
             <div className="mt-10">
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">Pets Disponíveis para Adoção</h2>
+              <h2 className="text-xl font-semibold text-gray-800 mb-4">
+                Pets Disponíveis para Adoção
+              </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-
                 <div className="bg-white rounded-lg shadow-md overflow-hidden transition duration-300 hover:shadow-lg">
-                  <img className="w-full h-48 object-cover" src="https://tinyurl.com/55c3zx7a" alt="Foto do pet" />
+                  <img
+                    className="w-full h-48 object-cover"
+                    src="https://tinyurl.com/55c3zx7a"
+                    alt="Foto do pet"
+                  />
                   <div className="p-4">
                     <div className="flex items-center mb-2">
                       <span className="text-orange-500 mr-1">★</span>
                       <h3 className="text-lg font-bold text-gray-800">Bolt</h3>
                     </div>
                     <p className="text-gray-700 mb-3 text-sm">
-                      Cachorro brincalhão, vacinado e pronto para adoção! Adora crianças.
+                      Cachorro brincalhão, vacinado e pronto para adoção! Adora
+                      crianças.
                       <span className="text-blue-500"> #AdotarÉAmor</span>
                     </p>
                   </div>
                 </div>
 
                 <div className="bg-white rounded-lg shadow-md overflow-hidden transition duration-300 hover:shadow-lg">
-                  <img className="w-full h-48 object-cover" src="https://tinyurl.com/3yrktheh" alt="Foto do pet" />
+                  <img
+                    className="w-full h-48 object-cover"
+                    src="https://tinyurl.com/3yrktheh"
+                    alt="Foto do pet"
+                  />
                   <div className="p-4">
                     <div className="flex items-center mb-2">
                       <span className="text-orange-500 mr-1">★</span>
@@ -89,12 +105,10 @@ const MyProfilePage = () => {
                     </p>
                   </div>
                 </div>
-
               </div>
             </div>
           </div>
         </div>
-
       </div>
 
       <Button
