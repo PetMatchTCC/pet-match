@@ -1,4 +1,10 @@
-import { createContext, SetStateAction, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { User, onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/firebase/fireConfig";
 import { doSignInWithEmailAndPassword, doSignOut } from "@/firebase/fireAuth";

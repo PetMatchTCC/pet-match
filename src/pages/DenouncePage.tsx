@@ -73,8 +73,12 @@ const DenouncePage = () => {
 
   return (
     <MainLayout>
-      <h1 className="text-xl sm:text-5xl mt-8 font-bold text-orange-500">PetGuard</h1>
-      <h2 className="font-semibold my-2 text-neutral-900">Sistema de denúncias do PetMatch</h2>
+      <h1 className="text-xl sm:text-5xl mt-8 font-bold text-orange-500">
+        PetGuard
+      </h1>
+      <h2 className="font-semibold my-2 text-neutral-900">
+        Sistema de denúncias do PetMatch
+      </h2>
       <Card className="p-6 sm:w-2/3 w-11/12 mt-4 mb-6 shadow-lg">
         <Button
           className="pl-2"
@@ -103,7 +107,8 @@ const DenouncePage = () => {
             <div>
               <div className="flex flex-col items-center mb-6">
                 <h4 className="font-semibold text-neutral-700 mb-2">
-                  Tópico: <span className="text-neutral-700">{denounce.topic}</span>
+                  Tópico:{" "}
+                  <span className="text-neutral-700">{denounce.topic}</span>
                 </h4>
                 {renderStatus(denounce.status || "pendente")}
               </div>

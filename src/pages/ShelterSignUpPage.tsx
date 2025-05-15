@@ -33,7 +33,7 @@ const ShelterSignUpPage = () => {
   });
 
   const validateCNPJ = (cnpj: string): boolean => {
-    cnpj = cnpj.replace(/[^\d]+/g, '');
+    cnpj = cnpj.replace(/[^\d]+/g, "");
 
     if (cnpj.length !== 14) return false;
 
@@ -97,8 +97,8 @@ const ShelterSignUpPage = () => {
                     required: "Por favor, informe o nome do abrigo",
                     minLength: {
                       value: 3,
-                      message: "Esse nome é muito curto"
-                    }
+                      message: "Esse nome é muito curto",
+                    },
                   }}
                   render={({ field }) => (
                     <FormItem>
@@ -122,8 +122,8 @@ const ShelterSignUpPage = () => {
                     required: "É necessário um e-mail para criar a conta",
                     pattern: {
                       value: emailRegex,
-                      message: "E-mail em formato inválido"
-                    }
+                      message: "E-mail em formato inválido",
+                    },
                   }}
                   render={({ field }) => (
                     <FormItem>
@@ -145,7 +145,8 @@ const ShelterSignUpPage = () => {
                   name="cnpj"
                   rules={{
                     required: "É obrigatório informar o CNPJ",
-                    validate: (value) => validateCNPJ(value) || "O CNPJ é inválido",
+                    validate: (value) =>
+                      validateCNPJ(value) || "O CNPJ é inválido",
                   }}
                   render={({ field }) => (
                     <FormItem>
@@ -180,8 +181,8 @@ const ShelterSignUpPage = () => {
                     required: "É obrigatório informar o endereço",
                     minLength: {
                       value: 5,
-                      message: "O endereço é muito curto"
-                    }
+                      message: "O endereço é muito curto",
+                    },
                   }}
                   render={({ field }) => (
                     <FormItem>
@@ -237,7 +238,7 @@ const ShelterSignUpPage = () => {
                     required: "Escolha uma senha",
                     minLength: {
                       value: 8,
-                      message: "Sua senha é muito curta"
+                      message: "Sua senha é muito curta",
                     },
                   }}
                   render={({ field }) => (
@@ -261,7 +262,9 @@ const ShelterSignUpPage = () => {
                   name="repass"
                   rules={{
                     required: "Por favor, preencha novamente a senha",
-                    validate: (value) => value === form.getValues("password") || "As senhas não coincidem"
+                    validate: (value) =>
+                      value === form.getValues("password") ||
+                      "As senhas não coincidem",
                   }}
                   render={({ field }) => (
                     <FormItem>
