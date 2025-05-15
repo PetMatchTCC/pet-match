@@ -1,9 +1,52 @@
-import { Heart, X } from "lucide-react";
+import { Heart, ServerCog, X } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { PetInterface } from "@/types/petTypes";
+import { useEffect, useState } from "react";
+import { get, ref } from "firebase/database";
+import { db } from "@/firebase/fireConfig";
+import PawLoader from "./PawLoader";
 
-const PetCard = () => {
+interface PetCardProps {
+  userId: string;
+  petId: string;
+}
+const PetCard: React.FC<PetCardProps> = (userId, petId) => {
+
+  const [petData, setPetData] = useState<PetInterface | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchPetData = async () => {
+      try {
+        setLoading(true);
+        const dbRef = ref(db, `users/${userId}/pets/${petId}`);
+        const snapshot = await get(dbRef);
+        if (snapshot.exists()) {
+          setPetData(snapshot.val() as PetInterface);
+        } else {
+          setPetData(null);
+        }
+      } catch (err) {
+        console.log("Erro ao buscar pet: ", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPetData();
+  }, [userId, petId]);
+
+  if (loading) {
+    return <LoadingPetCard />;
+  }
+
+  if (!petData) {
+    return <ErrorPetCard />;
+  }
+
+
   return (
-    <Card className="max-w-sm bg-white rounded-lg shadow-md overflow-hidden transition duration-300 hover:shadow-lg">
+    <Card className="max-w-sm bg-white rounded-lg shadow-md overflow-hidden">
       <div className="flex items-center p-4">
         <img
           className="w-10 h-10 rounded-full object-cover mr-3"
@@ -56,3 +99,20 @@ const PetCard = () => {
 };
 
 export default PetCard;
+
+const ErrorPetCard = () => {
+  return (
+    <Card className="min-w-80 min-h-80 bg-white rounded-lg shadow-md overflow-hidden transition duration-300 hover:shadow-lg items-center text-neutral-800 flex justify-center flex-col">
+      <ServerCog size={72} />
+      <h1>Erro ao buscar pet</h1>
+    </Card>
+  )
+}
+
+const LoadingPetCard = () => {
+  return (
+    <Card className="max-w-sm bg-white rounded-lg shadow-md overflow-hidden transition duration-300 hover:shadow-lg">
+      <PawLoader />
+    </Card>
+  )
+}

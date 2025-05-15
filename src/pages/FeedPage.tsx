@@ -8,10 +8,10 @@ const FeedPage = () => {
         <h1 className="font-bold text-4xl text-orange-500 my-4">PetMatch</h1>
       </div>
       <section className="gap-4 grid grid-cols-1">
-        <PetCard />
-        <PetCard />
-        <PetCard />
-        <PetCard />
+        <PetCard
+          userId="123"
+          petId="123"
+        />
       </section>
     </MainLayout>
   );
