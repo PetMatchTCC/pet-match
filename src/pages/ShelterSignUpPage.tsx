@@ -11,15 +11,17 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import { doCreateUserWithEmailAndPassword } from "@/firebase/fireAuth";
 import { useNavigate } from "react-router-dom";
 import { ShelterAuthFormValues } from "@/types/authTypes";
 import { Separator } from "@/components/ui/separator";
 import InputMask from "react-input-mask";
 import { UserRoundPlus } from "lucide-react";
+import { handleShelterCreation } from "@/services/authService";
+import { useAuth } from "@/contexts/AuthContext";
 
 const ShelterSignUpPage = () => {
   const navigate = useNavigate();
+  const { setLoading } = useAuth();
   const form = useForm<ShelterAuthFormValues>({
     defaultValues: {
       username: "",
@@ -32,44 +34,41 @@ const ShelterSignUpPage = () => {
     },
   });
 
-  const validateCNPJ = (cnpj: string): boolean => {
+  function validateCNPJ(cnpj: string): boolean {
     cnpj = cnpj.replace(/[^\d]+/g, "");
 
-    if (cnpj.length !== 14) return false;
+    if (cnpj.length !== 14 || /^(\d)\1+$/.test(cnpj)) return false;
 
-    if (/^(\d)\1+$/.test(cnpj)) return false;
+    let tamanho = cnpj.length - 2;
+    let numeros = cnpj.substring(0, tamanho);
+    let digitos = cnpj.substring(tamanho);
+    let soma = 0;
+    let pos = tamanho - 7;
 
-    let size = 12;
-    let numbers = cnpj.substring(0, size);
-    const digits = cnpj.substring(size);
-    let sum = 0;
-    let pos = size - 7;
-
-    for (let i = size; i >= 1; i--) {
-      sum += parseInt(numbers.charAt(size - i)) * pos--;
+    for (let i = tamanho; i >= 1; i--) {
+      soma += +numeros.charAt(tamanho - i) * pos--;
       if (pos < 2) pos = 9;
     }
-    let result = sum % 11 < 2 ? 0 : 11 - (sum % 11);
-    if (result !== parseInt(digits.charAt(0))) return false;
 
-    size = size + 1;
-    numbers = cnpj.substring(0, size);
-    sum = 0;
-    pos = size - 7;
+    let resultado = soma % 11 < 2 ? 0 : 11 - (soma % 11);
+    if (resultado !== +digitos.charAt(0)) return false;
 
-    for (let i = size; i >= 1; i--) {
-      sum += parseInt(numbers.charAt(size - i)) * pos--;
+    tamanho += 1;
+    numeros = cnpj.substring(0, tamanho);
+    soma = 0;
+    pos = tamanho - 7;
+
+    for (let i = tamanho; i >= 1; i--) {
+      soma += +numeros.charAt(tamanho - i) * pos--;
       if (pos < 2) pos = 9;
     }
-    result = sum % 11 < 2 ? 0 : 11 - (sum % 11);
-    if (result !== parseInt(digits.charAt(1))) return false;
 
-    return true;
-  };
+    resultado = soma % 11 < 2 ? 0 : 11 - (soma % 11);
+    return resultado === +digitos.charAt(1);
+  }
 
-  const onSubmit = async (data: { username: string; password: string }) => {
-    await doCreateUserWithEmailAndPassword(data.username, data.password);
-    navigate("/feed");
+  const onSubmit = async (data: ShelterAuthFormValues) => {
+    await handleShelterCreation(data, setLoading, navigate);
   };
 
   const emailRegex: RegExp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
