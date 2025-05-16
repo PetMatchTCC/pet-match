@@ -11,15 +11,17 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import { doCreateUserWithEmailAndPassword } from "@/firebase/fireAuth";
 import { useNavigate } from "react-router-dom";
 import { ShelterAuthFormValues } from "@/types/authTypes";
 import { Separator } from "@/components/ui/separator";
 import InputMask from "react-input-mask";
 import { UserRoundPlus } from "lucide-react";
+import { handleShelterCreation } from "@/services/authService";
+import { useAuth } from "@/contexts/AuthContext";
 
 const ShelterSignUpPage = () => {
   const navigate = useNavigate();
+  const { setLoading } = useAuth();
   const form = useForm<ShelterAuthFormValues>({
     defaultValues: {
       username: "",
@@ -32,44 +34,41 @@ const ShelterSignUpPage = () => {
     },
   });
 
-  const validateCNPJ = (cnpj: string): boolean => {
-    cnpj = cnpj.replace(/[^\d]+/g, '');
+  function validateCNPJ(cnpj: string): boolean {
+    cnpj = cnpj.replace(/[^\d]+/g, "");
 
-    if (cnpj.length !== 14) return false;
+    if (cnpj.length !== 14 || /^(\d)\1+$/.test(cnpj)) return false;
 
-    if (/^(\d)\1+$/.test(cnpj)) return false;
+    let tamanho = cnpj.length - 2;
+    let numeros = cnpj.substring(0, tamanho);
+    let digitos = cnpj.substring(tamanho);
+    let soma = 0;
+    let pos = tamanho - 7;
 
-    let size = 12;
-    let numbers = cnpj.substring(0, size);
-    const digits = cnpj.substring(size);
-    let sum = 0;
-    let pos = size - 7;
-
-    for (let i = size; i >= 1; i--) {
-      sum += parseInt(numbers.charAt(size - i)) * pos--;
+    for (let i = tamanho; i >= 1; i--) {
+      soma += +numeros.charAt(tamanho - i) * pos--;
       if (pos < 2) pos = 9;
     }
-    let result = sum % 11 < 2 ? 0 : 11 - (sum % 11);
-    if (result !== parseInt(digits.charAt(0))) return false;
 
-    size = size + 1;
-    numbers = cnpj.substring(0, size);
-    sum = 0;
-    pos = size - 7;
+    let resultado = soma % 11 < 2 ? 0 : 11 - (soma % 11);
+    if (resultado !== +digitos.charAt(0)) return false;
 
-    for (let i = size; i >= 1; i--) {
-      sum += parseInt(numbers.charAt(size - i)) * pos--;
+    tamanho += 1;
+    numeros = cnpj.substring(0, tamanho);
+    soma = 0;
+    pos = tamanho - 7;
+
+    for (let i = tamanho; i >= 1; i--) {
+      soma += +numeros.charAt(tamanho - i) * pos--;
       if (pos < 2) pos = 9;
     }
-    result = sum % 11 < 2 ? 0 : 11 - (sum % 11);
-    if (result !== parseInt(digits.charAt(1))) return false;
 
-    return true;
-  };
+    resultado = soma % 11 < 2 ? 0 : 11 - (soma % 11);
+    return resultado === +digitos.charAt(1);
+  }
 
-  const onSubmit = async (data: { username: string; password: string }) => {
-    await doCreateUserWithEmailAndPassword(data.username, data.password);
-    navigate("/feed");
+  const onSubmit = async (data: ShelterAuthFormValues) => {
+    await handleShelterCreation(data, setLoading, navigate);
   };
 
   const emailRegex: RegExp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
@@ -97,8 +96,8 @@ const ShelterSignUpPage = () => {
                     required: "Por favor, informe o nome do abrigo",
                     minLength: {
                       value: 3,
-                      message: "Esse nome é muito curto"
-                    }
+                      message: "Esse nome é muito curto",
+                    },
                   }}
                   render={({ field }) => (
                     <FormItem>
@@ -122,8 +121,8 @@ const ShelterSignUpPage = () => {
                     required: "É necessário um e-mail para criar a conta",
                     pattern: {
                       value: emailRegex,
-                      message: "E-mail em formato inválido"
-                    }
+                      message: "E-mail em formato inválido",
+                    },
                   }}
                   render={({ field }) => (
                     <FormItem>
@@ -145,7 +144,8 @@ const ShelterSignUpPage = () => {
                   name="cnpj"
                   rules={{
                     required: "É obrigatório informar o CNPJ",
-                    validate: (value) => validateCNPJ(value) || "O CNPJ é inválido",
+                    validate: (value) =>
+                      validateCNPJ(value) || "O CNPJ é inválido",
                   }}
                   render={({ field }) => (
                     <FormItem>
@@ -180,8 +180,8 @@ const ShelterSignUpPage = () => {
                     required: "É obrigatório informar o endereço",
                     minLength: {
                       value: 5,
-                      message: "O endereço é muito curto"
-                    }
+                      message: "O endereço é muito curto",
+                    },
                   }}
                   render={({ field }) => (
                     <FormItem>
@@ -237,7 +237,7 @@ const ShelterSignUpPage = () => {
                     required: "Escolha uma senha",
                     minLength: {
                       value: 8,
-                      message: "Sua senha é muito curta"
+                      message: "Sua senha é muito curta",
                     },
                   }}
                   render={({ field }) => (
@@ -261,7 +261,9 @@ const ShelterSignUpPage = () => {
                   name="repass"
                   rules={{
                     required: "Por favor, preencha novamente a senha",
-                    validate: (value) => value === form.getValues("password") || "As senhas não coincidem"
+                    validate: (value) =>
+                      value === form.getValues("password") ||
+                      "As senhas não coincidem",
                   }}
                   render={({ field }) => (
                     <FormItem>
