@@ -55,7 +55,7 @@ const NotificationPage = () => {
       {error ? (
         <span>{error}</span>
       ) : (
-        <div className="max-w-3xl w-full">
+        <div className="max-w-3xl w-full gap-4">
           {notifications.map((item, key) => (
             <Alert key={key}>
               <Info className="h-4 w-4" />
