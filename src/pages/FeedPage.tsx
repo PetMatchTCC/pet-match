@@ -9,8 +9,8 @@ const FeedPage = () => {
       </div>
       <section className="gap-4 grid grid-cols-1">
         <PetCard
-          userId="123"
-          petId="123"
+          userId="QPIY5Rc00uPMEX6zuQOVyljytZR2"
+          petId="-OQZ_xY4iSKP6Cae5PTa"
         />
       </section>
     </MainLayout>

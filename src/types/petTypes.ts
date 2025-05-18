@@ -1,14 +1,8 @@
 export interface PetInterface {
-  age: number;
-  specie: SpeciesEnum;
   name: string;
-  shelter: string;
+  age: number | undefined;
+  specie: string;
+  sex: string;
   description: string;
-  date: Date;
-}
-
-enum SpeciesEnum {
-  Dog,
-  Cat,
-  Non,
+  date: string;
 }

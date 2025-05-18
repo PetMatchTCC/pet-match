@@ -10,8 +10,7 @@ interface PetCardProps {
   userId: string;
   petId: string;
 }
-const PetCard: React.FC<PetCardProps> = (userId, petId) => {
-
+const PetCard: React.FC<PetCardProps> = ({ userId, petId }) => {
   const [petData, setPetData] = useState<PetInterface | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -43,7 +42,6 @@ const PetCard: React.FC<PetCardProps> = (userId, petId) => {
   if (!petData) {
     return <ErrorPetCard />;
   }
-
 
   return (
     <Card className="max-w-sm bg-white rounded-lg shadow-md overflow-hidden">
@@ -106,13 +104,13 @@ const ErrorPetCard = () => {
       <ServerCog size={72} />
       <h1>Erro ao buscar pet</h1>
     </Card>
-  )
-}
+  );
+};
 
 const LoadingPetCard = () => {
   return (
     <Card className="max-w-sm bg-white rounded-lg shadow-md overflow-hidden transition duration-300 hover:shadow-lg">
       <PawLoader />
     </Card>
-  )
-}
+  );
+};
