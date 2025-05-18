@@ -9,7 +9,8 @@ import {
   FormControl,
   FormMessage
 } from "@/components/ui/form";
-import { getDatabase, ref, push } from "firebase/database";
+import { ref, push } from "firebase/database";
+import { db } from "@/firebase/fireConfig";
 import { useAuth } from "@/contexts/AuthContext";
 
 type PetFormData = {
@@ -30,9 +31,8 @@ export function PetForm() {
     },
   });
 
-  const { register, handleSubmit, formState: { errors }, control } = form;
+  const { handleSubmit, formState: { errors }, control, reset } = form;
   const { user } = useAuth();
-  const db = getDatabase();
 
   const onSubmit = (data: PetFormData) => {
     if (!user?.uid) {
@@ -42,14 +42,15 @@ export function PetForm() {
 
     const petData = {
       ...data,
-      idade: Number(data.idade),
+      idade: Number(data.idade), // converte idade para número
     };
 
     const petRef = ref(db, `users/${user.uid}/pets`);
+
     push(petRef, petData)
       .then(() => {
         alert("Pet cadastrado com sucesso!");
-        form.reset();
+        reset(); // limpa o formulário
       })
       .catch((error) => {
         console.error("Erro ao salvar pet:", error);
