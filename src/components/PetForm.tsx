@@ -20,8 +20,17 @@ type PetFormData = {
 };
 
 export function PetForm() {
-  const form = useForm<PetFormData>();
-  const { register, handleSubmit, formState: { errors } } = form;
+  const form = useForm<PetFormData>({
+    mode: "onTouched",
+    defaultValues: {
+      nome: "",
+      idade: "",
+      especie: "",
+      sexo: "",
+    },
+  });
+
+  const { register, handleSubmit, formState: { errors }, control } = form;
   const { user } = useAuth();
   const db = getDatabase();
 
@@ -31,9 +40,17 @@ export function PetForm() {
       return;
     }
 
+    const petData = {
+      ...data,
+      idade: Number(data.idade),
+    };
+
     const petRef = ref(db, `users/${user.uid}/pets`);
-    push(petRef, data)
-      .then(() => alert("Pet cadastrado com sucesso!"))
+    push(petRef, petData)
+      .then(() => {
+        alert("Pet cadastrado com sucesso!");
+        form.reset();
+      })
       .catch((error) => {
         console.error("Erro ao salvar pet:", error);
         alert("Erro ao salvar pet.");
@@ -45,7 +62,8 @@ export function PetForm() {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 max-w-md mx-auto p-4">
         <FormField
           name="nome"
-          control={form.control}
+          control={control}
+          rules={{ required: "Nome é obrigatório" }}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Nome</FormLabel>
@@ -59,7 +77,14 @@ export function PetForm() {
 
         <FormField
           name="idade"
-          control={form.control}
+          control={control}
+          rules={{
+            required: "Idade é obrigatória",
+            pattern: {
+              value: /^\d+$/,
+              message: "Idade deve conter apenas números",
+            },
+          }}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Idade</FormLabel>
@@ -73,7 +98,8 @@ export function PetForm() {
 
         <FormField
           name="especie"
-          control={form.control}
+          control={control}
+          rules={{ required: "Espécie é obrigatória" }}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Espécie</FormLabel>
@@ -87,7 +113,8 @@ export function PetForm() {
 
         <FormField
           name="sexo"
-          control={form.control}
+          control={control}
+          rules={{ required: "Sexo é obrigatório" }}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Sexo</FormLabel>
