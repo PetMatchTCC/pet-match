@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { get, ref } from "firebase/database";
 import { db } from "@/firebase/fireConfig";
 import PawLoader from "./PawLoader";
+import { toast } from "sonner";
+import { Button } from "../ui/button";
 
 interface PetCardProps {
   userId: string;
@@ -43,6 +45,27 @@ const PetCard: React.FC<PetCardProps> = ({ userId, petId }) => {
     return <ErrorPetCard />;
   }
 
+  const getSpecie = (species: string) => {
+    if ((species = "dog")) return "Cachorro";
+    if ((species = "cat")) return "Gato";
+    return "Outra espécie";
+  };
+
+  const getSex = (sex: string) => {
+    if (sex == "F") return "Fêmea";
+    return "Macho";
+  };
+
+  const showNegToast = () => {
+    toast("Iremos te mostrar menos pets desse tipo", {
+      description: "",
+      action: {
+        label: "Fechar",
+        onClick: () => null,
+      },
+    });
+  };
+
   return (
     <Card className="max-w-sm bg-white rounded-lg shadow-md overflow-hidden">
       <div className="flex items-center p-4">
@@ -66,23 +89,31 @@ const PetCard: React.FC<PetCardProps> = ({ userId, petId }) => {
 
       <div className="p-4">
         <div className="flex items-center mb-2">
-          <span className="text-orange-500 mr-1">★</span>
-          <h2 className="text-xl font-bold text-gray-800">Nome do Pet</h2>
+          <h2 className="text-xl font-bold text-gray-800">
+            {" "}
+            {petData.age} | {petData.name}
+          </h2>
         </div>
 
-        <p className="text-gray-700 mb-3">
-          Descrição do pet, características especiais ou história
-          interessante...
-          <span className="text-blue-500">#AdotarÉAmor</span>
-        </p>
+        <div className="flex flex-row gap-2">
+          <span>
+            <span className="font-semibold">Sexo:</span> {getSex(petData.sex)}
+          </span>
+          <span>
+            <span className="font-semibold">
+              Espécie: {getSpecie(petData.specie)}
+            </span>
+          </span>
+        </div>
 
         <div className="flex justify-center gap-6 mt-6">
-          <button
+          <Button
             className="w-16 h-16 flex items-center justify-center rounded-full bg-orange-200 text-orange-600 hover:bg-orange-300 transition-all duration-200 transform hover:scale-110"
             title="Não curtir"
+            onClick={showNegToast}
           >
             <X size={28} />
-          </button>
+          </Button>
 
           <button
             className="w-16 h-16 flex items-center justify-center rounded-full bg-orange-500 text-white hover:bg-orange-600 transition-all duration-200 transform hover:scale-110"
