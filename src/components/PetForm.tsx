@@ -1,87 +1,106 @@
-import React, { useState } from 'react';
+import { useForm } from "react-hook-form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage
+} from "@/components/ui/form";
+import { getDatabase, ref, push } from "firebase/database";
+import { useAuth } from "@/contexts/AuthContext";
 
-const PetForm = () => {
-  const [formData, setFormData] = useState({
-    petNome: '',
-    petIdade: '',
-    abrigoNome: '',
-    abrigoEndereco: ''
-  });
+type PetFormData = {
+  nome: string;
+  idade: string;
+  especie: string;
+  sexo: string;
+};
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
+export function PetForm() {
+  const form = useForm<PetFormData>();
+  const { register, handleSubmit, formState: { errors } } = form;
+  const { user } = useAuth();
+  const db = getDatabase();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = (data: PetFormData) => {
+    if (!user?.uid) {
+      alert("Usuário não autenticado.");
+      return;
+    }
 
-    // Para salvar api (se necessário)
-    console.log('Cadastro enviado:', formData);
-
-    // Exemplo de salvar no localStorage
-    localStorage.setItem('cadastroPetAbrigo', JSON.stringify(formData));
-
-    // Limpa o formulário após o envio
-    setFormData({
-      petNome: '',
-      petIdade: '',
-      abrigoNome: '',
-      abrigoEndereco: ''
-    });
+    const petRef = ref(db, `users/${user.uid}/pets`);
+    push(petRef, data)
+      .then(() => alert("Pet cadastrado com sucesso!"))
+      .catch((error) => {
+        console.error("Erro ao salvar pet:", error);
+        alert("Erro ao salvar pet.");
+      });
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 max-w-md mx-auto">
-      <h2 className="text-2xl font-bold text-center mb-4">Cadastro de Pet e Abrigo</h2>
+    <Form {...form}>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 max-w-md mx-auto p-4">
+        <FormField
+          name="nome"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Nome</FormLabel>
+              <FormControl>
+                <Input placeholder="Digite o nome do pet" {...field} />
+              </FormControl>
+              <FormMessage>{errors.nome?.message}</FormMessage>
+            </FormItem>
+          )}
+        />
 
-      <label className="block mb-2">Nome do Pet:</label>
-      <input
-        type="text"
-        name="petNome"
-        value={formData.petNome}
-        onChange={handleChange}
-        className="w-full mb-4 p-2 border rounded"
-        placeholder="Digite o nome do pet"
-      />
+        <FormField
+          name="idade"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Idade</FormLabel>
+              <FormControl>
+                <Input placeholder="Digite a idade do pet" {...field} />
+              </FormControl>
+              <FormMessage>{errors.idade?.message}</FormMessage>
+            </FormItem>
+          )}
+        />
 
-      <label className="block mb-2">Idade do Pet:</label>
-      <input
-        type="text"
-        name="petIdade"
-        value={formData.petIdade}
-        onChange={handleChange}
-        className="w-full mb-4 p-2 border rounded"
-        placeholder="Digite a idade do pet"
-      />
+        <FormField
+          name="especie"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Espécie</FormLabel>
+              <FormControl>
+                <Input placeholder="Ex: cão, gato" {...field} />
+              </FormControl>
+              <FormMessage>{errors.especie?.message}</FormMessage>
+            </FormItem>
+          )}
+        />
 
-      <label className="block mb-2">Nome do Abrigo:</label>
-      <input
-        type="text"
-        name="abrigoNome"
-        value={formData.abrigoNome}
-        onChange={handleChange}
-        className="w-full mb-4 p-2 border rounded"
-        placeholder="Digite o nome do abrigo"
-      />
+        <FormField
+          name="sexo"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Sexo</FormLabel>
+              <FormControl>
+                <Input placeholder="Macho ou Fêmea" {...field} />
+              </FormControl>
+              <FormMessage>{errors.sexo?.message}</FormMessage>
+            </FormItem>
+          )}
+        />
 
-      <label className="block mb-2">Endereço do Abrigo:</label>
-      <input
-        type="text"
-        name="abrigoEndereco"
-        value={formData.abrigoEndereco}
-        onChange={handleChange}
-        className="w-full mb-4 p-2 border rounded"
-        placeholder="Digite o endereço do abrigo"
-      />
-
-      <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">
-        Cadastrar
-      </button>
-    </form>
+        <Button type="submit" className="w-full">Cadastrar Pet</Button>
+      </form>
+    </Form>
   );
-};
-
-export default PetForm;
+}
