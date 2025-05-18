@@ -46,8 +46,8 @@ const PetCard: React.FC<PetCardProps> = ({ userId, petId }) => {
   }
 
   const getSpecie = (species: string) => {
-    if ((species = "dog")) return "Cachorro";
-    if ((species = "cat")) return "Gato";
+    if (species == "dog") return "Cachorro";
+    if (species == "cat") return "Gato";
     return "Outra espécie";
   };
 
