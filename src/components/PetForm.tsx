@@ -1,17 +1,20 @@
-import { useForm } from "react-hook-form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormField,
   FormItem,
   FormLabel,
   FormControl,
-  FormMessage
+  FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { useForm } from "react-hook-form";
 import { ref, push } from "firebase/database";
 import { db } from "@/firebase/fireConfig";
 import { useAuth } from "@/contexts/AuthContext";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { PawPrint } from "lucide-react";
 
 type PetFormData = {
   nome: string;
@@ -20,7 +23,7 @@ type PetFormData = {
   sexo: string;
 };
 
-export function PetForm() {
+const PetForm = () => {
   const form = useForm<PetFormData>({
     mode: "onTouched",
     defaultValues: {
@@ -31,7 +34,12 @@ export function PetForm() {
     },
   });
 
-  const { handleSubmit, formState: { errors }, control, reset } = form;
+  const {
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = form;
   const { user } = useAuth();
 
   const onSubmit = (data: PetFormData) => {
@@ -42,7 +50,7 @@ export function PetForm() {
 
     const petData = {
       ...data,
-      idade: Number(data.idade), // converte idade para número
+      idade: Number(data.idade),
     };
 
     const petRef = ref(db, `users/${user.uid}/pets`);
@@ -50,7 +58,7 @@ export function PetForm() {
     push(petRef, petData)
       .then(() => {
         alert("Pet cadastrado com sucesso!");
-        reset(); // limpa o formulário
+        reset();
       })
       .catch((error) => {
         console.error("Erro ao salvar pet:", error);
@@ -60,25 +68,32 @@ export function PetForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 max-w-md mx-auto p-4">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="space-y-4 max-w-md mx-auto p-4 w-full"
+      >
         <FormField
-          name="nome"
           control={control}
+          name="nome"
           rules={{ required: "Nome é obrigatório" }}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Nome</FormLabel>
+              <FormLabel htmlFor="nome">Nome*</FormLabel>
               <FormControl>
-                <Input placeholder="Digite o nome do pet" {...field} />
+                <Input
+                  id="nome"
+                  placeholder="Digite o nome do pet"
+                  {...field}
+                />
               </FormControl>
-              <FormMessage>{errors.nome?.message}</FormMessage>
+              <FormMessage />
             </FormItem>
           )}
         />
 
         <FormField
-          name="idade"
           control={control}
+          name="idade"
           rules={{
             required: "Idade é obrigatória",
             pattern: {
@@ -88,47 +103,68 @@ export function PetForm() {
           }}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Idade</FormLabel>
+              <FormLabel htmlFor="idade">Idade*</FormLabel>
               <FormControl>
-                <Input placeholder="Digite a idade do pet" {...field} />
+                <Input
+                  id="idade"
+                  placeholder="Digite a idade do pet"
+                  {...field}
+                />
               </FormControl>
-              <FormMessage>{errors.idade?.message}</FormMessage>
+              <FormMessage />
             </FormItem>
           )}
         />
 
         <FormField
-          name="especie"
           control={control}
+          name="especie"
           rules={{ required: "Espécie é obrigatória" }}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Espécie</FormLabel>
+              <FormLabel htmlFor="especie">Espécie*</FormLabel>
               <FormControl>
-                <Input placeholder="Ex: cão, gato" {...field} />
+                <Input
+                  id="especie"
+                  placeholder="Ex: cão, gato"
+                  {...field}
+                />
               </FormControl>
-              <FormMessage>{errors.especie?.message}</FormMessage>
+              <FormMessage />
             </FormItem>
           )}
         />
 
         <FormField
-          name="sexo"
           control={control}
+          name="sexo"
           rules={{ required: "Sexo é obrigatório" }}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Sexo</FormLabel>
+              <FormLabel htmlFor="sexo">Sexo*</FormLabel>
               <FormControl>
-                <Input placeholder="Macho ou Fêmea" {...field} />
+                <Input
+                  id="sexo"
+                  placeholder="Macho ou Fêmea"
+                  {...field}
+                />
               </FormControl>
-              <FormMessage>{errors.sexo?.message}</FormMessage>
+              <FormMessage />
             </FormItem>
           )}
         />
 
-        <Button type="submit" className="w-full">Cadastrar Pet</Button>
+        <Separator className="my-4" />
+
+        <Button
+          type="submit"
+          className="w-full my-4"
+        >
+          Cadastrar Pet
+        </Button>
       </form>
     </Form>
   );
-}
+};
+
+export default PetForm;
