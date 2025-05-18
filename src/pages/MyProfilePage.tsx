@@ -6,6 +6,14 @@ import { db } from "@/firebase/fireConfig";
 import { ref, get } from "firebase/database";
 import { useAuth } from "@/contexts/AuthContext";
 import PawLoader from "@/components/custom/PawLoader";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import PetForm from "@/components/PetForm";
 
 const MyProfilePage = () => {
   const { user } = useAuth();
@@ -133,16 +141,32 @@ const MyProfilePage = () => {
       </div>
 
       {userData?.shelter && (
-        <Button
-          className="fixed bottom-6 right-6 z-10 bg-orange-500 text-white rounded-lg px-4 py-2 flex items-center gap-2 shadow-lg hover:bg-orange-600 transition-colors duration-200"
-          aria-label="Adicionar novo pet"
-        >
-          <Plus />
-          Adicionar Pet
-        </Button>
+        <Dialog>
+          <DialogTrigger>
+            <AddPetButon />
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Adicionar pet</DialogTitle>
+            </DialogHeader>
+            <PetForm />
+          </DialogContent>
+        </Dialog>
       )}
     </MainLayout>
   );
 };
 
 export default MyProfilePage;
+
+const AddPetButon = () => {
+  return (
+    <Button
+      className="fixed bottom-6 right-6 z-10 bg-orange-500 text-white rounded-lg px-4 py-2 flex items-center gap-2 shadow-lg hover:bg-orange-600 transition-colors duration-200"
+      aria-label="Adicionar novo pet"
+    >
+      <Plus />
+      Adicionar Pet
+    </Button>
+  );
+};
