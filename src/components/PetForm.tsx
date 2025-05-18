@@ -15,42 +15,53 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { PawPrint } from "lucide-react";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import { PetInterface } from "@/types/petTypes";
 
-type PetFormData = {
-  nome: string;
-  idade: string;
-  especie: string;
-  sexo: string;
-};
+const especieOptions = [
+  { value: "dog", label: "Cachorro" },
+  { value: "cat", label: "Gato" },
+  { value: "non", label: "Outra" },
+];
+
+const sexoOptions = [
+  { value: "M", label: "Macho" },
+  { value: "F", label: "Fêmea" },
+];
 
 const PetForm = () => {
-  const form = useForm<PetFormData>({
+  const form = useForm<PetInterface>({
     mode: "onTouched",
     defaultValues: {
-      nome: "",
-      idade: "",
-      especie: "",
-      sexo: "",
+      name: "",
+      age: undefined,
+      specie: undefined,
+      sex: undefined,
     },
   });
 
-  const {
-    handleSubmit,
-    control,
-    reset,
-    formState: { errors },
-  } = form;
+  const { handleSubmit, control, reset } = form;
   const { user } = useAuth();
 
-  const onSubmit = (data: PetFormData) => {
+  const onSubmit = (data: PetInterface) => {
     if (!user?.uid) {
       alert("Usuário não autenticado.");
       return;
     }
 
-    const petData = {
+    const petData: PetInterface = {
       ...data,
-      idade: Number(data.idade),
+      name: data.name,
+      specie: data.specie,
+      sex: data.sex,
+      date: new Date().toDateString(),
+      age: data.age ? Number(data.age) : undefined,
     };
 
     const petRef = ref(db, `users/${user.uid}/pets`);
@@ -67,103 +78,148 @@ const PetForm = () => {
   };
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="space-y-4 max-w-md mx-auto p-4 w-full"
-      >
-        <FormField
-          control={control}
-          name="nome"
-          rules={{ required: "Nome é obrigatório" }}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel htmlFor="nome">Nome*</FormLabel>
-              <FormControl>
-                <Input
-                  id="nome"
-                  placeholder="Digite o nome do pet"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+    <Card className="flex justify-center flex-col w-[95%] max-w-[500px] my-8 p-2">
+      <CardTitle className="flex items-center justify-center text-primary gap-1">
+        <PawPrint size={28} />
+        <h1 className="text-2xl font-bold text-center my-6">Cadastro de Pet</h1>
+      </CardTitle>
+      <CardContent className="flex justify-center w-full">
+        <Form {...form}>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-4 max-w-md mx-auto p-4 w-full"
+          >
+            <FormField
+              control={control}
+              name="name"
+              rules={{ required: "Nome é obrigatório" }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="name">Nome*</FormLabel>
+                  <FormControl>
+                    <Input
+                      id="name"
+                      placeholder="Digite o nome do pet"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-        <FormField
-          control={control}
-          name="idade"
-          rules={{
-            required: "Idade é obrigatória",
-            pattern: {
-              value: /^\d+$/,
-              message: "Idade deve conter apenas números",
-            },
-          }}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel htmlFor="idade">Idade*</FormLabel>
-              <FormControl>
-                <Input
-                  id="idade"
-                  placeholder="Digite a idade do pet"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+            <FormField
+              control={control}
+              name="age"
+              rules={{
+                required: "Idade é obrigatória",
+                pattern: {
+                  value: /^\d+$/,
+                  message: "Idade deve conter apenas números",
+                },
+              }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="age">Idade*</FormLabel>
+                  <FormControl>
+                    <Input
+                      id="age"
+                      placeholder="Digite a idade do pet"
+                      type="number"
+                      min={0}
+                      {...field}
+                      // Garante que o valor seja string para o RHF, mas aceita undefined
+                      value={field.value === undefined ? "" : field.value}
+                      onChange={(e) => {
+                        // Permite vazio para resetar, ou número
+                        const val = e.target.value;
+                        field.onChange(val === "" ? undefined : val);
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-        <FormField
-          control={control}
-          name="especie"
-          rules={{ required: "Espécie é obrigatória" }}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel htmlFor="especie">Espécie*</FormLabel>
-              <FormControl>
-                <Input
-                  id="especie"
-                  placeholder="Ex: cão, gato"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+            <FormField
+              control={control}
+              name="specie"
+              rules={{ required: "Espécie é obrigatória" }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="specie">Espécie*</FormLabel>
+                  <FormControl>
+                    <Select
+                      value={field.value}
+                      onValueChange={(value) => field.onChange(value)}
+                      disabled={field.disabled}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Selecione a espécie" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {especieOptions.map((option) => (
+                          <SelectItem
+                            key={option.value}
+                            value={option.value}
+                          >
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-        <FormField
-          control={control}
-          name="sexo"
-          rules={{ required: "Sexo é obrigatório" }}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel htmlFor="sexo">Sexo*</FormLabel>
-              <FormControl>
-                <Input
-                  id="sexo"
-                  placeholder="Macho ou Fêmea"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+            <FormField
+              control={control}
+              name="sex"
+              rules={{ required: "Sexo é obrigatório" }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="sex">Sexo*</FormLabel>
+                  <FormControl>
+                    <Select
+                      value={field.value}
+                      onValueChange={(value) => field.onChange(value)}
+                      disabled={field.disabled}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Selecione o sexo" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {sexoOptions.map((option) => (
+                          <SelectItem
+                            key={option.value}
+                            value={option.value}
+                          >
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-        <Separator className="my-4" />
+            <Separator className="my-4" />
 
-        <Button
-          type="submit"
-          className="w-full my-4"
-        >
-          Cadastrar Pet
-        </Button>
-      </form>
-    </Form>
+            <Button
+              type="submit"
+              className="w-full my-4"
+            >
+              Cadastrar Pet
+            </Button>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
   );
 };
 

@@ -28,7 +28,6 @@ interface FormInput {
 }
 
 const NewReportTab = () => {
-
   const navigate = useNavigate();
 
   const form = useForm<FormInput>({
