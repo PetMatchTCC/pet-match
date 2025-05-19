@@ -12,8 +12,14 @@ interface PetCardProps {
   userId: string;
   petId: string;
 }
+
+interface ShelterInterface {
+  address: string;
+  username: string;
+}
 const PetCard: React.FC<PetCardProps> = ({ userId, petId }) => {
   const [petData, setPetData] = useState<PetInterface | null>(null);
+  const [shelterData, setShelterData] = useState<ShelterInterface | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -34,6 +40,23 @@ const PetCard: React.FC<PetCardProps> = ({ userId, petId }) => {
       }
     };
 
+    const fetchShelterData = async () => {
+      try {
+        setLoading(true);
+        const dbRef = ref(db, `users/${userId}/meta`);
+        const snapshot = await get(dbRef);
+        if (snapshot.exists()) {
+          setShelterData(snapshot.val());
+        } else {
+          setShelterData(null);
+        }
+      } catch (err) {
+        console.log("Erro ao buscar dados do abrigo: ", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchShelterData();
     fetchPetData();
   }, [userId, petId]);
 
@@ -67,7 +90,7 @@ const PetCard: React.FC<PetCardProps> = ({ userId, petId }) => {
   };
 
   return (
-    <Card className="max-w-sm bg-white rounded-lg shadow-md overflow-hidden">
+    <Card className="max-w-sm bg-white rounded-lg shadow-md overflow-hidden w-80">
       <div className="flex items-center p-4">
         <img
           className="w-10 h-10 rounded-full object-cover mr-3"
@@ -76,14 +99,14 @@ const PetCard: React.FC<PetCardProps> = ({ userId, petId }) => {
         />
         <div>
           <h3 className="text-sm font-semibold text-gray-800">
-            Nome do Abrigo
+            {shelterData?.username}
           </h3>
-          <p className="text-xs text-gray-500">Data da postagem</p>
+          <p className="text-xs text-gray-500">{shelterData?.address}</p>
         </div>
       </div>
       <img
         className="w-full h-64 object-cover"
-        src="https://images.unsplash.com/photo-1518717758536-85ae29035b6d"
+        src="https://th.bing.com/th/id/R.a7a9450c45d6b3540cfc1ae41dbee395?rik=wNO1wfqeqiQkoA&pid=ImgRaw&r=0"
         alt="Foto do pet"
       />
 
