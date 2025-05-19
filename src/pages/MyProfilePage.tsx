@@ -13,6 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Link } from "react-router-dom";
 import PetForm from "@/components/PetForm";
 
 const MyProfilePage = () => {
@@ -100,6 +101,10 @@ const MyProfilePage = () => {
                     </p>
                   </div>
                 </div>
+
+                <Button asChild className="mt-3">
+                  <Link to="/edit-profile">Editar Perfil</Link>
+                </Button>
 
                 <div className="mt-4">
                   <p className="text-gray-700">
