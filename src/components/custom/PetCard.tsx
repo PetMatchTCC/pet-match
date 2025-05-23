@@ -1,4 +1,4 @@
-import { Heart, ServerCog, X } from "lucide-react";
+import { Bone, Fingerprint, Heart, Phone, ServerCog, X } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { PetInterface } from "@/types/petTypes";
 import { useEffect, useState } from "react";
@@ -16,6 +16,7 @@ interface PetCardProps {
 interface ShelterInterface {
   address: string;
   username: string;
+  phone: string;
 }
 const PetCard: React.FC<PetCardProps> = ({ userId, petId }) => {
   const [petData, setPetData] = useState<PetInterface | null>(null);
@@ -118,14 +119,25 @@ const PetCard: React.FC<PetCardProps> = ({ userId, petId }) => {
           </h2>
         </div>
 
-        <div className="flex flex-row gap-2">
-          <span>
-            <span className="font-semibold">Sexo:</span> {getSex(petData.sex)}
+        <div className="flex flex-row gap-2 my-2">
+          <div className="flex flex-row">
+            <span className="font-semibold flex flex-row gap-1 mr-1">
+              <Fingerprint />
+              Sexo:</span> {getSex(petData.sex)}
+          </div>
+          <div className="flex flex-row">
+            <span className="font-semibold flex flex-row gap-1 mr-1">
+              <Bone />
+              Espécie:</span>{getSpecie(petData.specie)}
+          </div>
+        </div>
+
+        <div className="flex flex-row gap-1">
+          <span className="flex flex-row font-semibold gap-2 text-neutral-800">
+            <Phone /> Contato:
           </span>
-          <span>
-            <span className="font-semibold">
-              Espécie: {getSpecie(petData.specie)}
-            </span>
+          <span className="text-neutral-800">
+            {shelterData?.phone}
           </span>
         </div>
 
