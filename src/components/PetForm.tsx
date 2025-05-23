@@ -12,9 +12,7 @@ import { useForm } from "react-hook-form";
 import { ref, push } from "firebase/database";
 import { db } from "@/firebase/fireConfig";
 import { useAuth } from "@/contexts/AuthContext";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { PawPrint } from "lucide-react";
 import {
   Select,
   SelectTrigger,
