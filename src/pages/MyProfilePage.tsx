@@ -73,7 +73,7 @@ const MyProfilePage = () => {
     if (!window.confirm("Tem certeza que deseja excluir este pet?")) return;
     try {
       await remove(ref(db, `users/${uid}/pets/${petId}`));
-      setPets(pets.filter(p => p.id !== petId));
+      setPets(pets.filter((p) => p.id !== petId));
     } catch {
       alert("Erro ao excluir pet.");
     }
@@ -82,18 +82,7 @@ const MyProfilePage = () => {
   return (
     <MainLayout>
       <div className="w-full min-h-screen px-2 sm:px-4 md:px-8">
-        <style
-          dangerouslySetInnerHTML={{
-            __html: `
-        .profile-header {
-          background-image: url('https://tinyurl.com/3knxyu54');
-          background-size: cover;
-          background-position: center;
-        }
-      `,
-          }}
-        />
-        <div className="w-full max-w-7xl mx-auto bg-white rounded-lg shadow-md overflow-hidden mt-8 px-2 sm:px-4 md:px-8">
+        <div className="w-full mx-auto bg-white rounded-lg shadow-md overflow-hidden mt-8 px-2 sm:px-4 md:px-0">
           {loading && (
             <div className="flex justify-center items-center h-64">
               <PawLoader />
@@ -106,7 +95,7 @@ const MyProfilePage = () => {
           )}
           {!loading && !error && userData && (
             <>
-              <div className="profile-header relative h-48 flex items-end">
+              <div className="w-full relative h-48 flex items-end bg-gradient-to-r from-orange-400 to-orange-700">
                 <div className="absolute -bottom-16 left-6 w-32 h-32 rounded-full border-4 border-white overflow-hidden bg-white flex items-center justify-center">
                   {userData?.avatar ? (
                     <img
@@ -150,21 +139,9 @@ const MyProfilePage = () => {
                 <div className="mt-6 flex gap-6 text-center">
                   <div>
                     <span className="block text-2xl font-bold text-orange-500">
-                      {userData?.petsPosted || 0}
+                      {pets.length || 0}
                     </span>
                     <span className="text-sm text-gray-500">Pets Postados</span>
-                  </div>
-                  <div>
-                    <span className="block text-2xl font-bold text-orange-500">
-                      {userData?.followers || 0}
-                    </span>
-                    <span className="text-sm text-gray-500">Seguidores</span>
-                  </div>
-                  <div>
-                    <span className="block text-2xl font-bold text-orange-500">
-                      {userData?.likes || 0}
-                    </span>
-                    <span className="text-sm text-gray-500">Curtidas</span>
                   </div>
                 </div>
 

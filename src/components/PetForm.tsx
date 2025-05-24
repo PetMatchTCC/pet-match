@@ -67,6 +67,7 @@ const PetForm = () => {
     push(petRef, petData)
       .then(() => {
         alert("Pet cadastrado com sucesso!");
+        location.reload();
         reset();
       })
       .catch((error) => {
