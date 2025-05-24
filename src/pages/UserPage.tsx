@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { db } from "@/firebase/fireConfig";
 import { ref, get } from "firebase/database";
 import PawLoader from "@/components/custom/PawLoader";
-import { Flag } from "lucide-react";
+import { Flag, UserIcon } from "lucide-react";
 import { PetListItem } from "@/components/custom/PetListItem";
 
 const UserPage = () => {
@@ -32,10 +32,12 @@ const UserPage = () => {
         const petsSnap = await get(petsRef);
         if (petsSnap.exists()) {
           const petsObj = petsSnap.val();
-          const petsArray = Object.entries(petsObj).map(([key, value]: any) => ({
-            id: key,
-            ...value,
-          }));
+          const petsArray = Object.entries(petsObj).map(
+            ([key, value]: any) => ({
+              id: key,
+              ...value,
+            })
+          );
           setPets(petsArray);
         } else {
           setPets([]);
@@ -51,7 +53,7 @@ const UserPage = () => {
 
   return (
     <MainLayout>
-      <div className="min-h-screen">
+      <div className="min-h-screen w-full px-2 sm:px-4 md:px-8">
         {loading && (
           <div className="flex justify-center items-center h-64">
             <PawLoader />
@@ -64,25 +66,20 @@ const UserPage = () => {
         )}
         {!loading && !error && (
           <>
-            <style
-              dangerouslySetInnerHTML={{
-                __html: `
-            .profile-header {
-              background-image: url('https://tinyurl.com/3knxyu54');
-              background-size: cover;
-              background-position: center;
-            }
-          `,
-              }}
-            />
-            <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md overflow-hidden mt-8">
-              <div className="profile-header relative h-48 flex items-end">
-                <div className="absolute -bottom-16 left-6 w-32 h-32 rounded-full border-4 border-white overflow-hidden bg-white">
-                  <img
-                    src={userData?.avatar || "https://tinyurl.com/mburjtmz"}
-                    alt="Avatar do usuário"
-                    className="w-full h-full object-cover"
-                  />
+            <div className="w-full mx-auto bg-white rounded-lg shadow-md overflow-hidden mt-8 ">
+              <div className="profile-header relative h-48 flex items-end bg-gradient-to-r from-orange-400 to-orange-700">
+                <div className="absolute -bottom-16 left-6 w-32 h-32 rounded-full border-4 border-white overflow-hidden bg-white ">
+                  {userData?.avatar ? (
+                    <img
+                      src={userData.avatar}
+                      alt="Avatar do usuário"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-full">
+                      <UserIcon className="w-16 h-16 text-gray-400" />
+                    </div>
+                  )}
                 </div>
               </div>
 
