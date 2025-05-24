@@ -1,12 +1,22 @@
-import { Bone, Fingerprint, Heart, Phone, ServerCog, X } from "lucide-react";
+import {
+  Bone,
+  ChevronDown,
+  Fingerprint,
+  Flag,
+  Heart,
+  Phone,
+  ServerCog,
+  X,
+} from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { PetInterface } from "@/types/petTypes";
 import { useEffect, useState } from "react";
-import { get, ref } from "firebase/database";
+import { get, push, ref } from "firebase/database";
 import { db } from "@/firebase/fireConfig";
 import PawLoader from "./PawLoader";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface PetCardProps {
   userId: string;
@@ -84,15 +94,50 @@ const PetCard: React.FC<PetCardProps> = ({ userId, petId }) => {
     toast("Iremos te mostrar menos pets desse tipo", {
       description: "",
       action: {
-        label: "Fechar",
+        label: <ChevronDown />,
         onClick: () => null,
       },
     });
   };
 
+  const { user } = useAuth();
+  const uid = user?.displayName;
+
+  const handleLike = () => {
+    try {
+      const currentDate = new Date();
+      const formatedDate = currentDate.toLocaleDateString("pt-BR");
+
+      const msg = `${uid} curtiu seu post do pet ${petData.name}`;
+
+      const petRef = ref(db, `users/${userId}/notifications`);
+
+      push(petRef, {
+        text: msg,
+        date: formatedDate,
+      });
+
+      toast("Pet curtido", {
+        description: String(petData.name),
+        action: {
+          label: <ChevronDown />,
+          onClick: () => null,
+        },
+      });
+    } catch (err) {
+      toast("Erro ao curtir:", {
+        description: String(err),
+        action: {
+          label: <ChevronDown />,
+          onClick: () => null,
+        },
+      });
+    }
+  };
+
   return (
-    <Card className="max-w-sm bg-white rounded-lg shadow-md overflow-hidden w-80">
-      <div className="flex items-center p-4">
+    <Card className="max-w-md bg-white rounded-lg shadow-md overflow-hidden w-full">
+      <div className="flex items-center p-4 justify-between">
         <img
           className="w-10 h-10 rounded-full object-cover mr-3"
           src="https://avatar.iran.liara.run/public"
@@ -106,6 +151,14 @@ const PetCard: React.FC<PetCardProps> = ({ userId, petId }) => {
           </a>
           <p className="text-xs text-gray-500">{shelterData?.address}</p>
         </div>
+        <a href="/report">
+          <Button
+            variant="outline"
+            className="rounded-full"
+          >
+            <Flag />
+          </Button>
+        </a>
       </div>
       <img
         className="w-full h-64 object-cover"
@@ -154,12 +207,13 @@ const PetCard: React.FC<PetCardProps> = ({ userId, petId }) => {
             <X size={28} />
           </Button>
 
-          <button
+          <Button
             className="w-16 h-16 flex items-center justify-center rounded-full bg-orange-500 text-white hover:bg-orange-600 transition-all duration-200 transform hover:scale-110"
             title="Curtir"
+            onClick={handleLike}
           >
             <Heart size={28} />
-          </button>
+          </Button>
         </div>
       </div>
     </Card>

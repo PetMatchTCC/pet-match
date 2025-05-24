@@ -3,9 +3,10 @@ import {
   AdopterAuthFormValues,
   ShelterAuthFormValues,
 } from "@/types/authTypes";
-import { db } from "@/firebase/fireConfig";
+import { auth, db } from "@/firebase/fireConfig";
 import { ref, set } from "firebase/database";
 import { NavigateFunction } from "react-router-dom";
+import { updateProfile } from "firebase/auth";
 
 export const handleAdopterCreation = async (
   data: AdopterAuthFormValues,
@@ -35,6 +36,10 @@ export const handleAdopterCreation = async (
     await set(dbRef, metaData);
 
     console.log("Usuário criado com sucesso!");
+
+    await updateProfile(auth.currentUser!, {
+      displayName: String(metaData.username),
+    });
 
     navigate("/login");
   } catch (err) {
@@ -71,6 +76,10 @@ export const handleShelterCreation = async (
     await set(dbRef, metaData);
 
     console.log("Usuário criado com sucesso!");
+
+    await updateProfile(auth.currentUser!, {
+      displayName: String(metaData.username),
+    });
 
     navigate("/login");
   } catch (err) {

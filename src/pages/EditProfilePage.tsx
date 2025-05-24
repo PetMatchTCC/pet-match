@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { get, ref, update } from "firebase/database";
-import { db } from "@/firebase/fireConfig";
+import { auth, db } from "@/firebase/fireConfig";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import MainLayout from "@/components/layouts/MainLayout";
+import { updateProfile } from "firebase/auth";
 
 const EditProfilePage: React.FC = () => {
   const { user } = useAuth();
@@ -14,7 +15,9 @@ const EditProfilePage: React.FC = () => {
   const [username, setUsername] = useState("");
   const [phone, setPhone] = useState("");
   const [bio, setBio] = useState("");
-  const [errors, setErrors] = useState<{ username?: string; phone?: string }>({});
+  const [errors, setErrors] = useState<{ username?: string; phone?: string }>(
+    {}
+  );
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -37,7 +40,8 @@ const EditProfilePage: React.FC = () => {
     if (!username.trim()) newErrors.username = "Nome é obrigatório.";
     const phoneRegex = /^\(\d{2}\) \d{5}-\d{4}$/;
     if (!phone.trim()) newErrors.phone = "Telefone é obrigatório.";
-    else if (!phoneRegex.test(phone)) newErrors.phone = "Telefone deve estar no formato (99) 99999-9999.";
+    else if (!phoneRegex.test(phone))
+      newErrors.phone = "Telefone deve estar no formato (99) 99999-9999.";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -59,6 +63,9 @@ const EditProfilePage: React.FC = () => {
     e.preventDefault();
     if (!user) return;
     if (!validate()) return;
+    await updateProfile(auth.currentUser!, {
+      displayName: String(username),
+    });
     try {
       setLoading(true);
       const metaRef = ref(db, `users/${user.uid}/meta`);
@@ -75,10 +82,20 @@ const EditProfilePage: React.FC = () => {
   return (
     <MainLayout>
       <div className="max-w-2xl min-w-[360px] mx-auto mt-10 p-8 bg-white border rounded-lg shadow sm:max-w-3xl sm:p-12">
-        <h2 className="text-2xl font-bold mb-6 text-gray-800 text-center sm:text-left">Editar Perfil</h2>
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <h2 className="text-2xl font-bold mb-6 text-gray-800 text-center sm:text-left">
+          Editar Perfil
+        </h2>
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-6"
+        >
           <div>
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">Nome</label>
+            <label
+              htmlFor="username"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Nome
+            </label>
             <Input
               id="username"
               type="text"
@@ -88,10 +105,17 @@ const EditProfilePage: React.FC = () => {
               disabled={loading}
               className={errors.username ? "border-red-500" : ""}
             />
-            {errors.username && <p className="text-red-600 text-sm mt-1">{errors.username}</p>}
+            {errors.username && (
+              <p className="text-red-600 text-sm mt-1">{errors.username}</p>
+            )}
           </div>
           <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">Telefone</label>
+            <label
+              htmlFor="phone"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Telefone
+            </label>
             <Input
               id="phone"
               type="text"
@@ -102,10 +126,17 @@ const EditProfilePage: React.FC = () => {
               className={errors.phone ? "border-red-500" : ""}
               inputMode="numeric"
             />
-            {errors.phone && <p className="text-red-600 text-sm mt-1">{errors.phone}</p>}
+            {errors.phone && (
+              <p className="text-red-600 text-sm mt-1">{errors.phone}</p>
+            )}
           </div>
           <div>
-            <label htmlFor="bio" className="block text-sm font-medium text-gray-700 mb-1">Bio</label>
+            <label
+              htmlFor="bio"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Bio
+            </label>
             <textarea
               id="bio"
               value={bio}
@@ -115,7 +146,11 @@ const EditProfilePage: React.FC = () => {
               disabled={loading}
             />
           </div>
-          <Button type="submit" className="w-full" disabled={loading}>
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={loading}
+          >
             {loading ? "Salvando..." : "Salvar Alterações"}
           </Button>
         </form>
