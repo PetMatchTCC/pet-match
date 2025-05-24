@@ -56,7 +56,7 @@ const PetCard: React.FC<PetCardProps> = ({ userId, petId }) => {
       } finally {
         setLoading(false);
       }
-    }
+    };
     fetchShelterData();
     fetchPetData();
   }, [userId, petId]);
@@ -99,9 +99,11 @@ const PetCard: React.FC<PetCardProps> = ({ userId, petId }) => {
           alt="Avatar do Abrigo"
         />
         <div>
-          <h3 className="text-sm font-semibold text-gray-800">
-            {shelterData?.username}
-          </h3>
+          <a href={`/user/${userId}`}>
+            <h3 className="text-sm font-semibold text-gray-800">
+              {shelterData?.username}
+            </h3>
+          </a>
           <p className="text-xs text-gray-500">{shelterData?.address}</p>
         </div>
       </div>
@@ -123,12 +125,16 @@ const PetCard: React.FC<PetCardProps> = ({ userId, petId }) => {
           <div className="flex flex-row">
             <span className="font-semibold flex flex-row gap-1 mr-1">
               <Fingerprint />
-              Sexo:</span> {getSex(petData.sex)}
+              Sexo:
+            </span>{" "}
+            {getSex(petData.sex)}
           </div>
           <div className="flex flex-row">
             <span className="font-semibold flex flex-row gap-1 mr-1">
               <Bone />
-              Espécie:</span>{getSpecie(petData.specie)}
+              Espécie:
+            </span>
+            {getSpecie(petData.specie)}
           </div>
         </div>
 
@@ -136,9 +142,7 @@ const PetCard: React.FC<PetCardProps> = ({ userId, petId }) => {
           <span className="flex flex-row font-semibold gap-2 text-neutral-800">
             <Phone /> Contato:
           </span>
-          <span className="text-neutral-800">
-            {shelterData?.phone}
-          </span>
+          <span className="text-neutral-800">{shelterData?.phone}</span>
         </div>
 
         <div className="flex justify-center gap-6 mt-6">
