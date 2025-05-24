@@ -1,9 +1,9 @@
 import MainLayout from "@/components/layouts/MainLayout";
 import { Button } from "@/components/ui/button";
-import { Plus, User as UserIcon } from "lucide-react";
+import { Plus, User as UserIcon, Pencil, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { db } from "@/firebase/fireConfig";
-import { ref, get } from "firebase/database";
+import { ref, get, remove } from "firebase/database";
 import { useAuth } from "@/contexts/AuthContext";
 import PawLoader from "@/components/custom/PawLoader";
 
@@ -12,31 +12,63 @@ const MyProfilePage = () => {
   const uid = user?.uid;
 
   const [userData, setUserData] = useState<any>(null);
+  const [pets, setPets] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  // Busca dados do usuário e pets
+  const fetchUserAndPets = async () => {
     if (!uid) return;
-    const fetchUser = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const userRef = ref(db, `users/${uid}/meta`);
-        const snap = await get(userRef);
-        if (snap.exists()) {
-          setUserData(snap.val());
-        } else {
-          setUserData(null);
-          setError("Usuário não encontrado.");
-        }
-      } catch (err) {
-        setError("Erro ao buscar dados do usuário.");
-      } finally {
-        setLoading(false);
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Busca dados do usuário
+      const userRef = ref(db, `users/${uid}/meta`);
+      const snap = await get(userRef);
+
+      if (snap.exists()) {
+        setUserData(snap.val());
+      } else {
+        setUserData(null);
+        setError("Usuário não encontrado.");
       }
-    };
-    fetchUser();
+
+      // Busca pets
+      const petsRef = ref(db, `users/${uid}/pets`);
+      const petsSnap = await get(petsRef);
+      if (petsSnap.exists()) {
+        const petsObj = petsSnap.val();
+        const petsArray = Object.entries(petsObj).map(([key, value]: any) => ({
+          id: key,
+          ...value,
+        }));
+        setPets(petsArray);
+      } else {
+        setPets([]);
+      }
+    } catch (err) {
+      setError("Erro ao buscar dados do usuário.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserAndPets();
+    // eslint-disable-next-line
   }, [uid]);
+
+  // Excluir pet
+  const handleDeletePet = async (petId: string) => {
+    if (!window.confirm("Tem certeza que deseja excluir este pet?")) return;
+    try {
+      await remove(ref(db, `users/${uid}/pets/${petId}`));
+      setPets(pets.filter(p => p.id !== petId));
+    } catch {
+      alert("Erro ao excluir pet.");
+    }
+  };
 
   return (
     <MainLayout>
@@ -124,7 +156,45 @@ const MyProfilePage = () => {
                   <h2 className="text-xl font-semibold text-gray-800 mb-4">
                     Pets Disponíveis para Adoção
                   </h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    {pets.length === 0 && (
+                      <span className="text-gray-500 col-span-full">
+                        Nenhum pet cadastrado.
+                      </span>
+                    )}
+                    {pets.map((pet) => (
+                      <div
+                        key={pet.id}
+                        className="bg-gray-50 rounded-lg shadow p-4 flex flex-col items-center relative"
+                      >
+                        <h3 className="font-semibold text-lg">
+                          {pet.name || "Sem nome"}
+                        </h3>
+                        <p className="text-sm text-gray-500 mb-2">
+                          Idade: {pet.age ? `${pet.age} anos` : "Não informada"}
+                        </p>
+                        <div className="flex gap-2 mt-2">
+                          <Button
+                            size="sm"
+                            className="bg-orange-500 text-white hover:bg-orange-600"
+                            asChild
+                          >
+                            <a href={`/edit-pet/${pet.id}`}>
+                              <Pencil className="w-4 h-4 mr-1" /> Editar
+                            </a>
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="destructive"
+                            className="text-white bg-red-500 hover:bg-red-600"
+                            onClick={() => handleDeletePet(pet.id)}
+                          >
+                            <Trash2 className="w-4 h-4 mr-1" /> Excluir
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </>

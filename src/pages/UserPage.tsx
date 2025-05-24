@@ -4,12 +4,13 @@ import { useEffect, useState } from "react";
 import { db } from "@/firebase/fireConfig";
 import { ref, get } from "firebase/database";
 import PawLoader from "@/components/custom/PawLoader";
-import { Button } from "@/components/ui/button";
 import { Flag } from "lucide-react";
+import { PetListItem } from "@/components/custom/PetListItem";
 
 const UserPage = () => {
   const { uid } = useParams();
   const [userData, setUserData] = useState<any>(null);
+  const [pets, setPets] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -25,6 +26,19 @@ const UserPage = () => {
           setUserData(snap.val());
         } else {
           setError("Usuário não encontrado.");
+        }
+
+        const petsRef = ref(db, `users/${uid}/pets`);
+        const petsSnap = await get(petsRef);
+        if (petsSnap.exists()) {
+          const petsObj = petsSnap.val();
+          const petsArray = Object.entries(petsObj).map(([key, value]: any) => ({
+            id: key,
+            ...value,
+          }));
+          setPets(petsArray);
+        } else {
+          setPets([]);
         }
       } catch (err) {
         setError("Erro ao buscar dados do usuário.");
@@ -82,11 +96,12 @@ const UserPage = () => {
                       {userData?.shelter ? "Abrigo" : "Adotante"}
                     </p>
                   </div>
-                  <Link to="/report">
-                    <Button variant={"outline"}>
-                      <Flag />
-                      Reportar
-                    </Button>
+                  <Link
+                    to="/report"
+                    className="flex items-center gap-1 border rounded px-3 py-2 text-gray-700 hover:bg-gray-100"
+                  >
+                    <Flag />
+                    Reportar
                   </Link>
                 </div>
 
@@ -103,46 +118,19 @@ const UserPage = () => {
                     Pets Disponíveis para Adoção
                   </h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div className="bg-white rounded-lg shadow-md overflow-hidden transition duration-300 hover:shadow-lg">
-                      <img
-                        className="w-full h-48 object-cover"
-                        src="https://tinyurl.com/55c3zx7a"
-                        alt="Foto do pet"
+                    {pets.length === 0 && (
+                      <span className="text-gray-500 col-span-full">
+                        Nenhum pet cadastrado.
+                      </span>
+                    )}
+                    {pets.map((pet) => (
+                      <PetListItem
+                        key={pet.id}
+                        name={pet.name}
+                        age={pet.age}
+                        petId={pet.id}
                       />
-                      <div className="p-4">
-                        <div className="flex items-center mb-2">
-                          <span className="text-orange-500 mr-1">★</span>
-                          <h3 className="text-lg font-bold text-gray-800">
-                            Bolt
-                          </h3>
-                        </div>
-                        <p className="text-gray-700 mb-3 text-sm">
-                          Cachorro brincalhão, vacinado e pronto para adoção!
-                          Adora crianças.
-                          <span className="text-blue-500"> #AdotarÉAmor</span>
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="bg-white rounded-lg shadow-md overflow-hidden transition duration-300 hover:shadow-lg">
-                      <img
-                        className="w-full h-48 object-cover"
-                        src="https://tinyurl.com/3yrktheh"
-                        alt="Foto do pet"
-                      />
-                      <div className="p-4">
-                        <div className="flex items-center mb-2">
-                          <span className="text-orange-500 mr-1">★</span>
-                          <h3 className="text-lg font-bold text-gray-800">
-                            Luna
-                          </h3>
-                        </div>
-                        <p className="text-gray-700 mb-3 text-sm">
-                          Gata carinhosa e tranquila. Ideal para apartamentos.
-                          <span className="text-blue-500"> #AdotarÉAmor</span>
-                        </p>
-                      </div>
-                    </div>
+                    ))}
                   </div>
                 </div>
               </div>
