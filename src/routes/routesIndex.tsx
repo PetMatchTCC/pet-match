@@ -16,6 +16,8 @@ import NotificationPage from "@/pages/NotificationsPage";
 import ChatPage from "@/pages/ChatPage";
 import SettingsPage from "@/pages/SettingsPage";
 import DenouncePage from "@/pages/DenouncePage";
+import EditProfilePage from "@/pages/EditProfilePage";
+import EditPetPage from "@/pages/EditPetPage";
 
 export function RoutesIndex() {
   const { loading } = useAuth();
@@ -83,6 +85,14 @@ export function RoutesIndex() {
           <Route
             path="/settings"
             element={<SettingsPage />}
+          />
+          <Route
+            path="/edit-profile"
+            element={<EditProfilePage />}
+          />
+          <Route
+            path="/edit-pet/:petId"
+            element={<EditPetPage />}
           />
         </Route>
       </Routes>
