@@ -126,6 +126,7 @@ const UserPage = () => {
                         name={pet.name}
                         age={pet.age}
                         petId={pet.id}
+                        me={false}
                       />
                     ))}
                   </div>
