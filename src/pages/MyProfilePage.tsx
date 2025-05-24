@@ -102,7 +102,10 @@ const MyProfilePage = () => {
                   </div>
                 </div>
 
-                <Button asChild className="mt-3">
+                <Button
+                  asChild
+                  className="mt-3"
+                >
                   <Link to="/edit-profile">Editar Perfil</Link>
                 </Button>
 

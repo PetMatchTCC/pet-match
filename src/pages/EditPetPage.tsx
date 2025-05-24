@@ -3,7 +3,7 @@ import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import { db } from "@/firebase/fireConfig";
 import { get, ref, update } from "firebase/database";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import {
