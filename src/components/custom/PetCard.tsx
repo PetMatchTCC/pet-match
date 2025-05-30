@@ -3,7 +3,9 @@ import {
   ChevronDown,
   Fingerprint,
   Flag,
+  GalleryVertical,
   Heart,
+  ImageIcon,
   Phone,
   ServerCog,
   X,
@@ -160,11 +162,9 @@ const PetCard: React.FC<PetCardProps> = ({ userId, petId }) => {
           </Button>
         </a>
       </div>
-      <img
-        className="w-full h-64 object-cover"
-        src="https://th.bing.com/th/id/R.a7a9450c45d6b3540cfc1ae41dbee395?rik=wNO1wfqeqiQkoA&pid=ImgRaw&r=0"
-        alt="Foto do pet"
-      />
+      <div className="w-full h-64 object-cover bg-neutral-100 flex items-center justify-center">
+        <ImageIcon size={32} />
+      </div>
 
       <div className="p-4">
         <div className="flex items-center mb-2">
