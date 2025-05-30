@@ -3,6 +3,7 @@ import { SidebarProvider, SidebarTrigger } from "../ui/sidebar";
 import { ReactNode } from "react";
 import { Toaster } from "../ui/sonner";
 
+
 const MainLayout = ({ children }: { children: ReactNode }) => {
   return (
     <SidebarProvider>

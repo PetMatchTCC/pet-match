@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import PetCard from "./CardPet"; // ajuste o caminho conforme seu projeto
+import PetCard from "./PetCard"; // ajuste o caminho conforme seu projeto
 import { db } from "@/firebase/fireConfig";
 import { ref, get } from "firebase/database";
 import { Card } from "@/components/ui/card";
