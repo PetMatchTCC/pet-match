@@ -7,9 +7,10 @@ interface PetListItemProps {
   name: string;
   age: number;
   petId: string;
+  me: boolean;
 }
 
-export const PetListItem: React.FC<PetListItemProps> = ({ name, age, petId }) => {
+export const PetListItem: React.FC<PetListItemProps> = ({ name, age, petId, me }) => {
   return (
     <Card className="w-full bg-white border border-orange-100 hover:shadow-md transition-shadow">
       <CardContent className="p-4">
@@ -25,13 +26,15 @@ export const PetListItem: React.FC<PetListItemProps> = ({ name, age, petId }) =>
           </div>
         </div>
       </CardContent>
+      {me &&
+          (
       <CardFooter className="flex justify-end gap-2 p-4">
+
         <Button
           asChild
           className="bg-orange-500 hover:bg-orange-600 text-white"
         >
           <a href={`/edit-pet/${petId}`}>
-            {/* Ícone de editar pode ser adicionado aqui se desejar */}
             Editar
           </a>
         </Button>
@@ -43,6 +46,7 @@ export const PetListItem: React.FC<PetListItemProps> = ({ name, age, petId }) =>
           Excluir
         </Button>
       </CardFooter>
+          )}
     </Card>
   );
 };
