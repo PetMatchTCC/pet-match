@@ -50,6 +50,8 @@ export const handleAdopterCreation = async (
       displayName: String(metaData.username),
     });
 
+    alert("Usuário criado com sucesso");
+
     navigate("/login");
   } catch (err) {
     console.error("Erro ao criar usuário: ", err);
@@ -98,6 +100,8 @@ export const handleShelterCreation = async (
     await updateProfile(auth.currentUser!, {
       displayName: String(metaData.username),
     });
+
+    alert("Usuário criado com sucesso");
 
     navigate("/login");
   } catch (err) {
