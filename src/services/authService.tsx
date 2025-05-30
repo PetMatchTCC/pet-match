@@ -37,6 +37,15 @@ export const handleAdopterCreation = async (
 
     console.log("Usuário criado com sucesso!");
 
+    const notRef = ref(db, `users/${uid}/notifications`);
+
+    const notData = {
+      date: new Date().toLocaleDateString(),
+      text: "Bem-vindo(a) ao PetMatch",
+    };
+
+    await set(notRef, notData);
+
     await updateProfile(auth.currentUser!, {
       displayName: String(metaData.username),
     });
@@ -76,6 +85,15 @@ export const handleShelterCreation = async (
     await set(dbRef, metaData);
 
     console.log("Usuário criado com sucesso!");
+
+    const notRef = ref(db, `users/${uid}/notifications`);
+
+    const notData = {
+      date: new Date().toLocaleDateString(),
+      text: "Bem-vindo(a) ao PetMatch",
+    };
+
+    await set(notRef, notData);
 
     await updateProfile(auth.currentUser!, {
       displayName: String(metaData.username),
