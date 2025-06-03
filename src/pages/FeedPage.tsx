@@ -20,6 +20,10 @@ const FeedPage = () => {
           userId="QPIY5Rc00uPMEX6zuQOVyljytZR2"
           petId="-ORTi1mqSKIfPs3cJQAk"
         />
+        <PetCard
+          userId="QPIY5Rc00uPMEX6zuQOVyljytZR2"
+          petId="-OQZ_xY4iSKP6Cae5PTa"
+        />
       </section>
     </MainLayout>
   );
